@@ -39,7 +39,7 @@ jobs:
     - name: Run mutation test
       run: dotnet stryker --mutation-level Complete --break-at 99
     - name: Combine Coverage Reports
-      uses: danielpalme/ReportGenerator-GitHub-Action@5.4.10
+      uses: danielpalme/ReportGenerator-GitHub-Action@5.4.12
       with:
         reports: "**/*.cobertura.xml"
         targetdir: "${{ github.workspace }}"
