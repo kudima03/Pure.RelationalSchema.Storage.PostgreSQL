@@ -2,8 +2,8 @@ version: 2
 updates:
 - package-ecosystem: nuget
   directories:
-    - "src/"
-    - "src/Tests/"
+    - "src/Pure.RelationalSchema.Storage.PostgreSQL"
+    - "src/Tests/Pure.RelationalSchema.Storage.PostgreSQL.Tests"
   schedule:
     interval: daily
   reviewers:
