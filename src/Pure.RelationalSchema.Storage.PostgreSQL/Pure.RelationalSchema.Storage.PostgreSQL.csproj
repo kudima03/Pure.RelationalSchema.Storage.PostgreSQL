@@ -6,4 +6,13 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <PackageId>Pure.RelationalSchema.Storage.PostgreSQL</PackageId>
+    <RootNamespace>Pure.RelationalSchema.Storage.PostgreSQL</RootNamespace>
+    <AssemblyName>Pure.RelationalSchema.Storage.PostgreSQL</AssemblyName>
+    <Authors>Dmitry Kurochkin</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/kudima03/Pure.RelationalSchema.Storage.PostgreSQL</PackageProjectUrl>
+  </PropertyGroup>
+
 </Project>
