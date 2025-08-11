@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Data;
 using System.Data.Common;
+using System.Linq.Expressions;
 using Pure.Collections.Generic;
 using Pure.Primitives.Materialized.String;
 using Pure.RelationalSchema.Abstractions.Column;
@@ -22,6 +23,12 @@ public sealed record PostgreSqlStoredTableDataSet : IStoredTableDataSet
     }
 
     public ITable TableSchema { get; }
+
+    public Type ElementType { get; }
+
+    public Expression Expression { get; }
+
+    public IQueryProvider Provider { get; }
 
     public IEnumerator<IRow> GetEnumerator()
     {
