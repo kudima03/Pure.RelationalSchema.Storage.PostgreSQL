@@ -1,46 +1,46 @@
 using System.Collections;
 using System.Data;
-using System.Data.Common;
 using System.Linq.Expressions;
-using Pure.Collections.Generic;
-using Pure.Primitives.Materialized.String;
-using Pure.RelationalSchema.Abstractions.Column;
 using Pure.RelationalSchema.Abstractions.Table;
-using Pure.RelationalSchema.HashCodes;
 using Pure.RelationalSchema.Storage.Abstractions;
-using String = Pure.Primitives.String.String;
 
 namespace Pure.RelationalSchema.Storage.PostgreSQL;
 
 public sealed record PostgreSqlStoredTableDataSet : IStoredTableDataSet
 {
-    private readonly IDbConnection _connection;
+    private readonly IQueryable<IRow> _rows;
+
+    private readonly IAsyncEnumerable<IRow> _rowsAsync;
 
     public PostgreSqlStoredTableDataSet(ITable tableSchema, IDbConnection connection)
+        : this(
+            tableSchema,
+            new RowsEnumerable(connection, tableSchema).AsQueryable(),
+            new RowsAsyncEnumerable(connection, tableSchema)
+        ) { }
+
+    private PostgreSqlStoredTableDataSet(
+        ITable tableSchema,
+        IQueryable<IRow> rows,
+        IAsyncEnumerable<IRow> rowsAsync
+    )
     {
+        _rows = rows;
+        _rowsAsync = rowsAsync;
         TableSchema = tableSchema;
-        _connection = connection;
     }
 
     public ITable TableSchema { get; }
 
-    public Type ElementType { get; }
+    public Type ElementType => _rows.ElementType;
 
-    public Expression Expression { get; }
+    public Expression Expression => _rows.Expression;
 
-    public IQueryProvider Provider { get; }
+    public IQueryProvider Provider => _rows.Provider;
 
     public IEnumerator<IRow> GetEnumerator()
     {
-        using IDbCommand cmd = _connection.CreateCommand();
-        cmd.CommandText =
-            $"SELECT * FROM \"{new MaterializedString(TableSchema.Name).Value}\"";
-        IDataReader reader = cmd.ExecuteReader();
-
-        while (reader.Read())
-        {
-            yield return MapDataRecordToRow(reader);
-        }
+        return _rows.GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
@@ -48,42 +48,10 @@ public sealed record PostgreSqlStoredTableDataSet : IStoredTableDataSet
         return GetEnumerator();
     }
 
-    public async IAsyncEnumerator<IRow> GetAsyncEnumerator(
+    public IAsyncEnumerator<IRow> GetAsyncEnumerator(
         CancellationToken cancellationToken = default
     )
     {
-        await using DbConnection conn = (DbConnection)_connection;
-        await using DbCommand cmd = conn.CreateCommand();
-        cmd.CommandText =
-            $"SELECT * FROM \"{new MaterializedString(TableSchema.Name).Value}\"";
-
-        await using DbDataReader reader = await cmd.ExecuteReaderAsync(cancellationToken);
-
-        while (await reader.ReadAsync(cancellationToken))
-        {
-            yield return MapDataRecordToRow(reader);
-        }
-    }
-
-    private IRow MapDataRecordToRow(IDataRecord record)
-    {
-        IReadOnlyDictionary<string, string> rawCells = TableSchema
-            .Columns.Select(x => new MaterializedString(x.Name).Value)
-            .ToDictionary(x => x, x => record[x].ToString())!;
-
-        IReadOnlyDictionary<IColumn, ICell> cells = new Dictionary<
-            IColumn,
-            IColumn,
-            ICell
-        >(
-            TableSchema.Columns,
-            x => x,
-            x => new Cell(
-                new String(rawCells[new MaterializedString(x.Name).Value].ToString())
-            ),
-            x => new ColumnHash(x)
-        );
-
-        return new Row(cells);
+        return _rowsAsync.GetAsyncEnumerator(cancellationToken);
     }
 }
