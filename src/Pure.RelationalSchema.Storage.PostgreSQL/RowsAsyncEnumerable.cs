@@ -35,29 +35,23 @@ public sealed record RowsAsyncEnumerable : IAsyncEnumerable<IRow>
 
         while (await reader.ReadAsync(cancellationToken))
         {
-            yield return MapDataRecordToRow(reader);
-        }
-    }
+            IReadOnlyDictionary<string, string> rawCells = _table
+                .Columns.Select(x => new MaterializedString(x.Name).Value)
+                .ToDictionary(x => x, x => reader[x].ToString())!;
 
-    private IRow MapDataRecordToRow(IDataRecord record)
-    {
-        IReadOnlyDictionary<string, string> rawCells = _table
-            .Columns.Select(x => new MaterializedString(x.Name).Value)
-            .ToDictionary(x => x, x => record[x].ToString())!;
+            IReadOnlyDictionary<IColumn, ICell> cells = new Dictionary<
+                IColumn,
+                IColumn,
+                ICell
+            >(
+                _table.Columns,
+                x => x,
+                x => new Cell(
+                    new String(rawCells[new MaterializedString(x.Name).Value].ToString())
+                ),
+                x => new ColumnHash(x)
+            );
 
-        IReadOnlyDictionary<IColumn, ICell> cells = new Dictionary<
-            IColumn,
-            IColumn,
-            ICell
-        >(
-            _table.Columns,
-            x => x,
-            x => new Cell(
-                new String(rawCells[new MaterializedString(x.Name).Value].ToString())
-            ),
-            x => new ColumnHash(x)
-        );
-
-        return new Row(cells);
+            yield return new Row(cells);        }
     }
 }

@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using Pure.Collections.Generic;
+using Pure.Primitives.Abstractions.String;
 using Pure.Primitives.Materialized.String;
 using Pure.RelationalSchema.Abstractions.Column;
 using Pure.RelationalSchema.Abstractions.Table;
@@ -27,38 +29,33 @@ public sealed record RowsEnumerable : IEnumerable<IRow>
         using IDbCommand cmd = _connection.CreateCommand();
         cmd.CommandText =
             $"SELECT * FROM \"{new MaterializedString(_table.Name).Value}\"";
-        IDataReader reader = cmd.ExecuteReader();
+        using IDataReader reader = cmd.ExecuteReader();
 
         while (reader.Read())
         {
-            yield return MapDataRecordToRow(reader);
+            IReadOnlyDictionary<string, string> rawCells = _table
+                .Columns.Select(x => new MaterializedString(x.Name).Value)
+                .ToDictionary(x => x, x => reader[x].ToString())!;
+
+            IReadOnlyDictionary<IColumn, ICell> cells = new Dictionary<
+                IColumn,
+                IColumn,
+                ICell
+            >(
+                _table.Columns,
+                x => x,
+                x => new Cell(
+                    new String(rawCells[new MaterializedString(x.Name).Value].ToString())
+                ),
+                x => new ColumnHash(x)
+            );
+
+            yield return new Row(cells);
         }
     }
 
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
-    }
-
-    private IRow MapDataRecordToRow(IDataRecord record)
-    {
-        IReadOnlyDictionary<string, string> rawCells = _table
-            .Columns.Select(x => new MaterializedString(x.Name).Value)
-            .ToDictionary(x => x, x => record[x].ToString())!;
-
-        IReadOnlyDictionary<IColumn, ICell> cells = new Dictionary<
-            IColumn,
-            IColumn,
-            ICell
-        >(
-            _table.Columns,
-            x => x,
-            x => new Cell(
-                new String(rawCells[new MaterializedString(x.Name).Value].ToString())
-            ),
-            x => new ColumnHash(x)
-        );
-
-        return new Row(cells);
     }
 }
