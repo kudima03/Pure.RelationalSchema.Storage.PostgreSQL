@@ -5,7 +5,7 @@ using Pure.RelationalSchema.Storage.Abstractions;
 
 namespace Pure.RelationalSchema.Storage.PostgreSQL.Tests.Fakes;
 
-internal class FakeStoredTableDataSet : IStoredTableDataSet
+internal sealed record FakeStoredTableDataSet : IStoredTableDataSet
 {
     private readonly IQueryable<IRow> _rows;
 
