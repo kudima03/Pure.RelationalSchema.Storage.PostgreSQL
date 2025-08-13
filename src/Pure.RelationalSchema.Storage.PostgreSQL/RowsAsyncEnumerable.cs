@@ -10,7 +10,7 @@ using String = Pure.Primitives.String.String;
 
 namespace Pure.RelationalSchema.Storage.PostgreSQL;
 
-public sealed record RowsAsyncEnumerable : IAsyncEnumerable<IRow>
+internal sealed record RowsAsyncEnumerable : IAsyncEnumerable<IRow>
 {
     private readonly IDbConnection _connection;
 
@@ -52,6 +52,7 @@ public sealed record RowsAsyncEnumerable : IAsyncEnumerable<IRow>
                 x => new ColumnHash(x)
             );
 
-            yield return new Row(cells);        }
+            yield return new Row(cells);
+        }
     }
 }

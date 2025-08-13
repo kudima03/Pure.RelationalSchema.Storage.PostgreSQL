@@ -10,7 +10,7 @@ using String = Pure.Primitives.String.String;
 
 namespace Pure.RelationalSchema.Storage.PostgreSQL;
 
-public sealed record RowsEnumerable : IEnumerable<IRow>
+internal sealed record RowsEnumerable : IEnumerable<IRow>
 {
     private readonly IDbConnection _connection;
 
