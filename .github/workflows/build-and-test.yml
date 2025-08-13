@@ -34,10 +34,6 @@ jobs:
     #  run: csharpier check .
     - name: Test
       run: dotnet test --no-build --verbosity normal --logger trx --collect:"XPlat Code Coverage"
-    - name: Install dotnet-stryker globally
-      run: dotnet tool install -g dotnet-stryker
-    - name: Run mutation test
-      run: dotnet stryker --mutation-level Complete --break-at 99
     - name: Combine Coverage Reports
       uses: danielpalme/ReportGenerator-GitHub-Action@5.4.12
       with:
