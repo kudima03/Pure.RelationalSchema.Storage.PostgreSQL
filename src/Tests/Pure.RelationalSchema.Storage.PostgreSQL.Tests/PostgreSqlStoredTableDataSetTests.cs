@@ -27,7 +27,7 @@ public sealed record PostgreSqlStoredTableDataSetTests : IClassFixture<DatabaseF
     [Fact]
     public void EnumeratesAsUntyped()
     {
-        ICollection<IRow> list = new List<IRow>();
+        ICollection<IRow> list = [];
 
         IEnumerable rows = new PostgreSqlStoredTableDataSet(
             _fixture.Table,

@@ -17,7 +17,8 @@ public sealed record PostgreSqlStoredTableDataSet : IStoredTableDataSet
             tableSchema,
             new RowsEnumerable(connection, tableSchema).AsQueryable(),
             new RowsAsyncEnumerable(connection, tableSchema)
-        ) { }
+        )
+    { }
 
     private PostgreSqlStoredTableDataSet(
         ITable tableSchema,

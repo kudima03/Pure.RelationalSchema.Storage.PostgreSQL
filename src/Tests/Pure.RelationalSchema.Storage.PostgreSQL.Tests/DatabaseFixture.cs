@@ -39,17 +39,6 @@ public sealed record DatabaseFixture : IDisposable
         Connection = new NpgsqlConnection(_postgres.GetConnectionString());
         Connection.Open();
 
-        ITable table = new Table.Table(
-            new String("sample_data"),
-            [
-                new Column.Column(new String("id"), new IntColumnType()),
-                new Column.Column(new String("big_number"), new LongColumnType()),
-                new Column.Column(new String("name"), new StringColumnType()),
-                new Column.Column(new String("created_date"), new DateColumnType()),
-                new Column.Column(new String("created_at"), new TimeColumnType()),
-            ],
-            []
-        );
 
         IDbCommand tableCreationCommand = Connection.CreateCommand();
         tableCreationCommand.CommandText = """
@@ -61,7 +50,7 @@ public sealed record DatabaseFixture : IDisposable
                 created_at TIMESTAMP NOT NULL
             );
             """;
-        tableCreationCommand.ExecuteScalar();
+        _ = tableCreationCommand.ExecuteScalar();
 
         IDbCommand tableSeedCommand = Connection.CreateCommand();
         tableSeedCommand.CommandText = """
@@ -78,7 +67,7 @@ public sealed record DatabaseFixture : IDisposable
             (10,8888888888888, 'Judy',    '2025-08-10', '2025-08-10 20:30:00');
             """;
 
-        tableSeedCommand.ExecuteScalar();
+        _ = tableSeedCommand.ExecuteScalar();
     }
 
     public void Dispose()
