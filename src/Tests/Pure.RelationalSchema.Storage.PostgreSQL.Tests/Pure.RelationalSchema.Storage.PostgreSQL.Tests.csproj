@@ -12,7 +12,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
     <PackageReference Include="Npgsql" Version="9.0.3" />
-    <PackageReference Include="Pure.RelationalSchema" Version="0.1.0" />
+    <PackageReference Include="Pure.RelationalSchema" Version="0.2.0" />
     <PackageReference Include="Pure.RelationalSchema.HashCodes" Version="0.1.0" />
     <PackageReference Include="System.Linq.Async" Version="6.0.3" />
     <PackageReference Include="Testcontainers.PostgreSql" Version="4.6.0" />
