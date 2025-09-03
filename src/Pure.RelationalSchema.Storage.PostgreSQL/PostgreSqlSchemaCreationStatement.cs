@@ -1,6 +1,7 @@
 using System.Collections;
 using Pure.Primitives.Abstractions.Char;
 using Pure.Primitives.Abstractions.String;
+using Pure.Primitives.String;
 using Pure.Primitives.String.Operations;
 using Pure.RelationalSchema.Abstractions.Schema;
 using Char = Pure.Primitives.Char.Char;
@@ -19,7 +20,8 @@ internal sealed record PostgreSqlSchemaCreationStatement : IString
     public string TextValue =>
         (
             (IString)
-                new NewLineJoinedString(
+                new JoinedString(
+                    new ConcatenatedString(new NewLineString(), new NewLineString()),
                     _schema.Tables.Select(x => new PostgreSqlTableCreationStatement(x))
                 )
         ).TextValue;

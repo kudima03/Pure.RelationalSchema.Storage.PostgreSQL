@@ -23,7 +23,9 @@ internal sealed record TableCreationHeaderStatement : IString
                 new ConcatenatedString(
                     new String("CREATE TABLE IF NOT EXISTS"),
                     new WhitespaceString(),
-                    _tableName
+                    new String("\""),
+                    _tableName,
+                    new String("\"")
                 )
         ).TextValue;
 

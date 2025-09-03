@@ -31,7 +31,7 @@ internal sealed record PostgreSqlTableCreationStatement : IString
                         new ConcatenatedString(new String(", "), new NewLineString()),
                         _table.Columns.Select(x => new ColumnCreationStatement(x))
                     ),
-                    new String(")")
+                    new String(");")
                 )
         ).TextValue;
 
