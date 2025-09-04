@@ -41,6 +41,15 @@ internal sealed record PostgreSqlSchemaCreationStatement : IString
                                 x.Indexes.Select(c => new IndexCreationStatement(c, x))
                             )
                         ),
+                        new JoinedString(
+                            new ConcatenatedString(
+                                new NewLineString(),
+                                new NewLineString()
+                            ),
+                            _schema.ForeignKeys.Select(
+                                x => new ForeignKeyCreationStatement(x)
+                            )
+                        ),
                     ]
                 )
         ).TextValue;
