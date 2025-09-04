@@ -22,7 +22,26 @@ internal sealed record PostgreSqlSchemaCreationStatement : IString
             (IString)
                 new JoinedString(
                     new ConcatenatedString(new NewLineString(), new NewLineString()),
-                    _schema.Tables.Select(x => new PostgreSqlTableCreationStatement(x))
+                    [
+                        new JoinedString(
+                            new ConcatenatedString(
+                                new NewLineString(),
+                                new NewLineString()
+                            ),
+                            _schema.Tables.Select(
+                                x => new PostgreSqlTableCreationStatement(x)
+                            )
+                        ),
+                        new JoinedString(
+                            new ConcatenatedString(
+                                new NewLineString(),
+                                new NewLineString()
+                            ),
+                            _schema.Tables.SelectMany(x =>
+                                x.Indexes.Select(c => new IndexCreationStatement(c, x))
+                            )
+                        ),
+                    ]
                 )
         ).TextValue;
 
