@@ -39,7 +39,6 @@ public sealed record DatabaseFixture : IDisposable
         Connection = new NpgsqlConnection(_postgres.GetConnectionString());
         Connection.Open();
 
-
         IDbCommand tableCreationCommand = Connection.CreateCommand();
         tableCreationCommand.CommandText = """
             CREATE TABLE sample_data (
