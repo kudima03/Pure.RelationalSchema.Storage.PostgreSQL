@@ -26,12 +26,12 @@ internal sealed record PostgreSqlTableCreationStatement : IString
                     new TableCreationHeaderStatement(
                         new HexString(new TableHash(_table))
                     ),
-                    new String("("),
+                    new LeftRoundBracketString(),
                     new JoinedString(
-                        new ConcatenatedString(new String(", "), new NewLineString()),
+                        new ConcatenatedString(new CommaString(), new NewLineString()),
                         _table.Columns.Select(x => new ColumnCreationStatement(x))
                     ),
-                    new String(");")
+                    new ConcatenatedString(new RightRoundBracketString(), new String(";"))
                 )
         ).TextValue;
 

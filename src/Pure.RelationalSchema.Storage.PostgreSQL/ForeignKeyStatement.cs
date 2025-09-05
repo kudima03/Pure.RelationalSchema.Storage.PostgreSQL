@@ -1,6 +1,7 @@
 using System.Collections;
 using Pure.Primitives.Abstractions.Char;
 using Pure.Primitives.Abstractions.String;
+using Pure.Primitives.String;
 using Pure.Primitives.String.Operations;
 using Pure.RelationalSchema.Abstractions.ForeignKey;
 using Pure.RelationalSchema.HashCodes;
@@ -23,21 +24,18 @@ internal sealed record ForeignKeyStatement : IString
             (IString)
                 new WhitespaceJoinedString(
                     new String("FOREIGN KEY"),
-                    new ConcatenatedString(
-                        new String("(\""),
-                        new HexString(new ColumnHash(_foreignKey.ReferencingColumn)),
-                        new String("\")")
+                    new WrappedString(
+                        new DoubleQuoteString(),
+                        new HexString(new ColumnHash(_foreignKey.ReferencingColumn))
                     ),
                     new String("REFERENCES"),
-                    new ConcatenatedString(
-                        new String("\""),
-                        new HexString(new TableHash(_foreignKey.ReferencedTable)),
-                        new String("\"")
+                    new WrappedString(
+                        new DoubleQuoteString(),
+                        new HexString(new TableHash(_foreignKey.ReferencedTable))
                     ),
-                    new ConcatenatedString(
-                        new String("(\""),
-                        new HexString(new ColumnHash(_foreignKey.ReferencedColumn)),
-                        new String("\");")
+                    new WrappedString(
+                        new DoubleQuoteString(),
+                        new HexString(new ColumnHash(_foreignKey.ReferencedColumn))
                     )
                 )
         ).TextValue;

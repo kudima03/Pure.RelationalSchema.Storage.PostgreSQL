@@ -20,12 +20,10 @@ internal sealed record TableCreationHeaderStatement : IString
     public string TextValue =>
         (
             (IString)
-                new ConcatenatedString(
+                new WhitespaceJoinedString(
                     new String("CREATE TABLE IF NOT EXISTS"),
                     new WhitespaceString(),
-                    new String("\""),
-                    _tableName,
-                    new String("\"")
+                    new WrappedString(new DoubleQuoteString(), _tableName)
                 )
         ).TextValue;
 

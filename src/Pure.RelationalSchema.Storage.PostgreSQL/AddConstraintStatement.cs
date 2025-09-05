@@ -1,6 +1,7 @@
 using System.Collections;
 using Pure.Primitives.Abstractions.Char;
 using Pure.Primitives.Abstractions.String;
+using Pure.Primitives.String;
 using Pure.Primitives.String.Operations;
 using Char = Pure.Primitives.Char.Char;
 using String = Pure.Primitives.String.String;
@@ -21,11 +22,7 @@ internal sealed record AddConstraintStatement : IString
             (IString)
                 new WhitespaceJoinedString(
                     new String("ADD CONSTRAINT"),
-                    new ConcatenatedString(
-                        new String("\""),
-                        _constraintName,
-                        new String("\"")
-                    )
+                    new WrappedString(new DoubleQuoteString(), _constraintName)
                 )
         ).TextValue;
 

@@ -35,25 +35,22 @@ internal sealed record IndexCreationStatement : IString
                         new EmptyString()
                     ),
                     new String("INDEX"),
-                    new ConcatenatedString(
-                        new String("\""),
-                        new HexString(new IndexHash(_index)),
-                        new String("\"")
+                    new WrappedString(
+                        new DoubleQuoteString(),
+                        new HexString(new IndexHash(_index))
                     ),
                     new String("ON"),
-                    new ConcatenatedString(
-                        new String("\""),
-                        new HexString(new TableHash(_table)),
-                        new String("\"")
+                    new WrappedString(
+                        new DoubleQuoteString(),
+                        new HexString(new TableHash(_table))
                     ),
                     new ConcatenatedString(
                         new String("("),
                         new JoinedString(
-                            new String(", "),
-                            _index.Columns.Select(x => new ConcatenatedString(
-                                new String("\""),
-                                new HexString(new ColumnHash(x)),
-                                new String("\"")
+                            new CommaString(),
+                            _index.Columns.Select(x => new WrappedString(
+                                new DoubleQuoteString(),
+                                new HexString(new ColumnHash(x))
                             ))
                         ),
                         new String(");")

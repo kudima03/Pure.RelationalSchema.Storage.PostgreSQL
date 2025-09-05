@@ -6,7 +6,6 @@ using Pure.Primitives.String.Operations;
 using Pure.RelationalSchema.Abstractions.Column;
 using Pure.RelationalSchema.HashCodes;
 using Char = Pure.Primitives.Char.Char;
-using String = Pure.Primitives.String.String;
 
 namespace Pure.RelationalSchema.Storage.PostgreSQL;
 
@@ -23,9 +22,10 @@ internal sealed record ColumnCreationStatement : IString
         (
             (IString)
                 new ConcatenatedString(
-                    new String("\""),
-                    new HexString(new ColumnHash(_column)),
-                    new String("\""),
+                    new WrappedString(
+                        new DoubleQuoteString(),
+                        new HexString(new ColumnHash(_column))
+                    ),
                     new WhitespaceString(),
                     new PostgreSqlColumnTypeName(_column.Type),
                     new WhitespaceString(),

@@ -1,6 +1,7 @@
 using System.Collections;
 using Pure.Primitives.Abstractions.Char;
 using Pure.Primitives.Abstractions.String;
+using Pure.Primitives.String;
 using Pure.Primitives.String.Operations;
 using Pure.RelationalSchema.Abstractions.Table;
 using Pure.RelationalSchema.HashCodes;
@@ -26,7 +27,7 @@ internal sealed record AlterTableStatement : IString
             (IString)
                 new WhitespaceJoinedString(
                     new String("ALTER TABLE"),
-                    new ConcatenatedString(new String("\""), _tableName, new String("\""))
+                    new WrappedString(new DoubleQuoteString(), _tableName)
                 )
         ).TextValue;
 
