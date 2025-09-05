@@ -24,7 +24,7 @@ internal sealed record ColumnCreationStatement : IString
                 new ConcatenatedString(
                     new WrappedString(
                         new DoubleQuoteString(),
-                        new HexString(new ColumnHash(_column))
+                        new TrimmedHash(new HexString(new ColumnHash(_column)))
                     ),
                     new WhitespaceString(),
                     new PostgreSqlColumnTypeName(_column.Type),

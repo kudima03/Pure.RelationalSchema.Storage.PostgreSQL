@@ -12,9 +12,12 @@ internal sealed record TableCreationHeaderStatement : IString
 {
     private readonly IString _tableName;
 
-    public TableCreationHeaderStatement(IString tableName)
+    private readonly IString _schemaName;
+
+    public TableCreationHeaderStatement(IString schemaName, IString tableName)
     {
         _tableName = tableName;
+        _schemaName = schemaName;
     }
 
     public string TextValue =>
@@ -22,8 +25,13 @@ internal sealed record TableCreationHeaderStatement : IString
             (IString)
                 new WhitespaceJoinedString(
                     new String("CREATE TABLE IF NOT EXISTS"),
-                    new WhitespaceString(),
-                    new WrappedString(new DoubleQuoteString(), _tableName)
+                    new JoinedString(
+                        new DotString(),
+                        [
+                            new WrappedString(new DoubleQuoteString(), _schemaName),
+                            new WrappedString(new DoubleQuoteString(), _tableName),
+                        ]
+                    )
                 )
         ).TextValue;
 

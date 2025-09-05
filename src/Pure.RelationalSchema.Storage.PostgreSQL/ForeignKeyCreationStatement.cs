@@ -12,20 +12,23 @@ internal sealed record ForeignKeyCreationStatement : IString
 {
     private readonly IForeignKey _foreignKey;
 
-    public ForeignKeyCreationStatement(IForeignKey foreignKey)
+    private readonly IString _schemaName;
+
+    public ForeignKeyCreationStatement(IForeignKey foreignKey, IString schemaName)
     {
         _foreignKey = foreignKey;
+        _schemaName = schemaName;
     }
 
     public string TextValue =>
         (
             (IString)
                 new NewLineJoinedString(
-                    new AlterTableStatement(_foreignKey.ReferencingTable),
+                    new AlterTableStatement(_foreignKey.ReferencingTable, _schemaName),
                     new AddConstraintStatement(
-                        new HexString(new ForeignKeyHash(_foreignKey))
+                        new TrimmedHash(new HexString(new ForeignKeyHash(_foreignKey)))
                     ),
-                    new ForeignKeyStatement(_foreignKey)
+                    new ForeignKeyStatement(_foreignKey, _schemaName)
                 )
         ).TextValue;
 

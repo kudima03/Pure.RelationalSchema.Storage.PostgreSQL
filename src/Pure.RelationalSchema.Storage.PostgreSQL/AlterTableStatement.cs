@@ -14,12 +14,15 @@ internal sealed record AlterTableStatement : IString
 {
     private readonly IString _tableName;
 
-    public AlterTableStatement(ITable table)
-        : this(new HexString(new TableHash(table))) { }
+    private readonly IString _schemaName;
 
-    public AlterTableStatement(IString tableName)
+    public AlterTableStatement(ITable table, IString schemaName)
+        : this(new TrimmedHash(new HexString(new TableHash(table))), schemaName) { }
+
+    public AlterTableStatement(IString tableName, IString schemaName)
     {
         _tableName = tableName;
+        _schemaName = schemaName;
     }
 
     public string TextValue =>
@@ -27,7 +30,13 @@ internal sealed record AlterTableStatement : IString
             (IString)
                 new WhitespaceJoinedString(
                     new String("ALTER TABLE"),
-                    new WrappedString(new DoubleQuoteString(), _tableName)
+                    new JoinedString(
+                        new DotString(),
+                        [
+                            new WrappedString(new DoubleQuoteString(), _schemaName),
+                            new WrappedString(new DoubleQuoteString(), _tableName),
+                        ]
+                    )
                 )
         ).TextValue;
 

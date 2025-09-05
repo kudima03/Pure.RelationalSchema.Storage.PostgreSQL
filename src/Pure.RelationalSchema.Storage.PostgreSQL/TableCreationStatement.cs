@@ -12,10 +12,13 @@ namespace Pure.RelationalSchema.Storage.PostgreSQL;
 
 internal sealed record TableCreationStatement : IString
 {
+    private readonly IString _schemaName;
+
     private readonly ITable _table;
 
-    public TableCreationStatement(ITable table)
+    public TableCreationStatement(IString schemaName, ITable table)
     {
+        _schemaName = schemaName;
         _table = table;
     }
 
@@ -24,14 +27,23 @@ internal sealed record TableCreationStatement : IString
             (IString)
                 new NewLineJoinedString(
                     new TableCreationHeaderStatement(
-                        new HexString(new TableHash(_table))
+                        _schemaName,
+                        new TrimmedHash(new HexString(new TableHash(_table)))
                     ),
-                    new LeftRoundBracketString(),
-                    new JoinedString(
-                        new ConcatenatedString(new CommaString(), new NewLineString()),
-                        _table.Columns.Select(x => new ColumnCreationStatement(x))
-                    ),
-                    new ConcatenatedString(new RightRoundBracketString(), new String(";"))
+                    new WrappedString(
+                        new LeftRoundBracketString(),
+                        new JoinedString(
+                            new ConcatenatedString(
+                                new CommaString(),
+                                new NewLineString()
+                            ),
+                            _table.Columns.Select(x => new ColumnCreationStatement(x))
+                        ),
+                        new ConcatenatedString(
+                            new RightRoundBracketString(),
+                            new String(";")
+                        )
+                    )
                 )
         ).TextValue;
 

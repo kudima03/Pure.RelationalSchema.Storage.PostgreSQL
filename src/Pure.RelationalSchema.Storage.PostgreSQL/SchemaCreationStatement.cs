@@ -4,7 +4,9 @@ using Pure.Primitives.Abstractions.String;
 using Pure.Primitives.String;
 using Pure.Primitives.String.Operations;
 using Pure.RelationalSchema.Abstractions.Schema;
+using Pure.RelationalSchema.HashCodes;
 using Char = Pure.Primitives.Char.Char;
+using String = Pure.Primitives.String.String;
 
 namespace Pure.RelationalSchema.Storage.PostgreSQL;
 
@@ -23,14 +25,27 @@ internal sealed record SchemaCreationStatement : IString
                 new JoinedString(
                     new ConcatenatedString(new NewLineString(), new NewLineString()),
                     [
+                        new ConcatenatedString(
+                            new WhitespaceJoinedString(
+                                new String("CREATE SCHEMA"),
+                                new WrappedString(
+                                    new DoubleQuoteString(),
+                                    new TrimmedHash(
+                                        new HexString(new SchemaHash(_schema))
+                                    )
+                                )
+                            ),
+                            new String(";")
+                        ),
                         new JoinedString(
                             new ConcatenatedString(
                                 new NewLineString(),
                                 new NewLineString()
                             ),
-                            _schema.Tables.Select(
-                                x => new TableCreationStatement(x)
-                            )
+                            _schema.Tables.Select(x => new TableCreationStatement(
+                                new TrimmedHash(new HexString(new SchemaHash(_schema))),
+                                x
+                            ))
                         ),
                         new JoinedString(
                             new ConcatenatedString(
@@ -38,7 +53,13 @@ internal sealed record SchemaCreationStatement : IString
                                 new NewLineString()
                             ),
                             _schema.Tables.SelectMany(x =>
-                                x.Indexes.Select(c => new IndexCreationStatement(c, x))
+                                x.Indexes.Select(c => new IndexCreationStatement(
+                                    c,
+                                    x,
+                                    new TrimmedHash(
+                                        new HexString(new SchemaHash(_schema))
+                                    )
+                                ))
                             )
                         ),
                         new JoinedString(
@@ -47,7 +68,12 @@ internal sealed record SchemaCreationStatement : IString
                                 new NewLineString()
                             ),
                             _schema.ForeignKeys.Select(
-                                x => new ForeignKeyCreationStatement(x)
+                                x => new ForeignKeyCreationStatement(
+                                    x,
+                                    new TrimmedHash(
+                                        new HexString(new SchemaHash(_schema))
+                                    )
+                                )
                             )
                         ),
                     ]

@@ -14,9 +14,12 @@ internal sealed record ForeignKeyStatement : IString
 {
     private readonly IForeignKey _foreignKey;
 
-    public ForeignKeyStatement(IForeignKey foreignKey)
+    private readonly IString _schemaName;
+
+    public ForeignKeyStatement(IForeignKey foreignKey, IString schemaName)
     {
         _foreignKey = foreignKey;
+        _schemaName = schemaName;
     }
 
     public string TextValue =>
@@ -28,22 +31,38 @@ internal sealed record ForeignKeyStatement : IString
                         new LeftRoundBracketString(),
                         new WrappedString(
                             new DoubleQuoteString(),
-                            new HexString(new ColumnHash(_foreignKey.ReferencingColumn))
+                            new TrimmedHash(
+                                new HexString(
+                                    new ColumnHash(_foreignKey.ReferencingColumn)
+                                )
+                            )
                         ),
                         new RightRoundBracketString()
                     ),
                     new String("REFERENCES"),
-                    new WrappedString(
-                        new DoubleQuoteString(),
-                        new HexString(new TableHash(_foreignKey.ReferencedTable))
+                    new JoinedString(
+                        new DotString(),
+                        [
+                            new WrappedString(new DoubleQuoteString(), _schemaName),
+                            new WrappedString(
+                                new DoubleQuoteString(),
+                                new TrimmedHash(
+                                    new HexString(
+                                        new TableHash(_foreignKey.ReferencedTable)
+                                    )
+                                )
+                            ),
+                        ]
                     ),
                     new ConcatenatedString(
                         new WrappedString(
                             new LeftRoundBracketString(),
                             new WrappedString(
                                 new DoubleQuoteString(),
-                                new HexString(
-                                    new ColumnHash(_foreignKey.ReferencedColumn)
+                                new TrimmedHash(
+                                    new HexString(
+                                        new ColumnHash(_foreignKey.ReferencedColumn)
+                                    )
                                 )
                             ),
                             new RightRoundBracketString()

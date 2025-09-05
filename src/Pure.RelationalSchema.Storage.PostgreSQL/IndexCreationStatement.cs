@@ -18,10 +18,13 @@ internal sealed record IndexCreationStatement : IString
 
     private readonly ITable _table;
 
-    public IndexCreationStatement(IIndex index, ITable table)
+    private readonly IString _schemaName;
+
+    public IndexCreationStatement(IIndex index, ITable table, IString schemaName)
     {
         _index = index;
         _table = table;
+        _schemaName = schemaName;
     }
 
     public string TextValue =>
@@ -37,12 +40,18 @@ internal sealed record IndexCreationStatement : IString
                     new String("INDEX"),
                     new WrappedString(
                         new DoubleQuoteString(),
-                        new HexString(new IndexHash(_index))
+                        new TrimmedHash(new HexString(new IndexHash(_index)))
                     ),
                     new String("ON"),
-                    new WrappedString(
-                        new DoubleQuoteString(),
-                        new HexString(new TableHash(_table))
+                    new JoinedString(
+                        new DotString(),
+                        [
+                            new WrappedString(new DoubleQuoteString(), _schemaName),
+                            new WrappedString(
+                                new DoubleQuoteString(),
+                                new TrimmedHash(new HexString(new TableHash(_table)))
+                            ),
+                        ]
                     ),
                     new ConcatenatedString(
                         new String("("),
@@ -50,7 +59,7 @@ internal sealed record IndexCreationStatement : IString
                             new CommaString(),
                             _index.Columns.Select(x => new WrappedString(
                                 new DoubleQuoteString(),
-                                new HexString(new ColumnHash(x))
+                                new TrimmedHash(new HexString(new ColumnHash(x)))
                             ))
                         ),
                         new String(");")
