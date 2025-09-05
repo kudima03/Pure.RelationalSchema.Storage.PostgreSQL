@@ -28,11 +28,11 @@ public sealed record PostgreSqlCreatedSchema : ISchema
     }
 
     public IString Name =>
-        _created.Value.BoolValue ? _schema.Name : throw new Exception();
+        _created.Value.BoolValue ? _schema.Name : throw new ArgumentException();
 
     public IEnumerable<ITable> Tables =>
-        _created.Value.BoolValue ? _schema.Tables : throw new Exception();
+        _created.Value.BoolValue ? _schema.Tables : throw new ArgumentException();
 
     public IEnumerable<IForeignKey> ForeignKeys =>
-        _created.Value.BoolValue ? _schema.ForeignKeys : throw new Exception();
+        _created.Value.BoolValue ? _schema.ForeignKeys : throw new ArgumentException();
 }
