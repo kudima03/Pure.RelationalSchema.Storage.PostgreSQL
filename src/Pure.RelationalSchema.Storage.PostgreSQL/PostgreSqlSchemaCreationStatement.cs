@@ -29,7 +29,7 @@ internal sealed record PostgreSqlSchemaCreationStatement : IString
                                 new NewLineString()
                             ),
                             _schema.Tables.Select(
-                                x => new PostgreSqlTableCreationStatement(x)
+                                x => new TableCreationStatement(x)
                             )
                         ),
                         new JoinedString(

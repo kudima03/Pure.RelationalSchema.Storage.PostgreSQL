@@ -10,11 +10,11 @@ using String = Pure.Primitives.String.String;
 
 namespace Pure.RelationalSchema.Storage.PostgreSQL;
 
-internal sealed record PostgreSqlTableCreationStatement : IString
+internal sealed record TableCreationStatement : IString
 {
     private readonly ITable _table;
 
-    public PostgreSqlTableCreationStatement(ITable table)
+    public TableCreationStatement(ITable table)
     {
         _table = table;
     }
