@@ -25,17 +25,30 @@ internal sealed record ForeignKeyStatement : IString
                 new WhitespaceJoinedString(
                     new String("FOREIGN KEY"),
                     new WrappedString(
-                        new DoubleQuoteString(),
-                        new HexString(new ColumnHash(_foreignKey.ReferencingColumn))
+                        new LeftRoundBracketString(),
+                        new WrappedString(
+                            new DoubleQuoteString(),
+                            new HexString(new ColumnHash(_foreignKey.ReferencingColumn))
+                        ),
+                        new RightRoundBracketString()
                     ),
                     new String("REFERENCES"),
                     new WrappedString(
                         new DoubleQuoteString(),
                         new HexString(new TableHash(_foreignKey.ReferencedTable))
                     ),
-                    new WrappedString(
-                        new DoubleQuoteString(),
-                        new HexString(new ColumnHash(_foreignKey.ReferencedColumn))
+                    new ConcatenatedString(
+                        new WrappedString(
+                            new LeftRoundBracketString(),
+                            new WrappedString(
+                                new DoubleQuoteString(),
+                                new HexString(
+                                    new ColumnHash(_foreignKey.ReferencedColumn)
+                                )
+                            ),
+                            new RightRoundBracketString()
+                        ),
+                        new String(";")
                     )
                 )
         ).TextValue;
