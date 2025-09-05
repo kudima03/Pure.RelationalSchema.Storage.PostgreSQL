@@ -8,11 +8,11 @@ using Char = Pure.Primitives.Char.Char;
 
 namespace Pure.RelationalSchema.Storage.PostgreSQL;
 
-internal sealed record PostgreSqlSchemaCreationStatement : IString
+internal sealed record SchemaCreationStatement : IString
 {
     private readonly ISchema _schema;
 
-    public PostgreSqlSchemaCreationStatement(ISchema schema)
+    public SchemaCreationStatement(ISchema schema)
     {
         _schema = schema;
     }

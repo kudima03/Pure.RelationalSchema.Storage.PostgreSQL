@@ -20,7 +20,7 @@ public sealed record PostgreSqlCreatedSchema : ISchema
         _created = new Lazy<IBool>(() =>
         {
             IDbCommand command = connection.CreateCommand();
-            IString schemaCreationScript = new PostgreSqlSchemaCreationStatement(_schema);
+            IString schemaCreationScript = new SchemaCreationStatement(_schema);
             command.CommandText = schemaCreationScript.TextValue;
             _ = command.ExecuteNonQuery();
             return new True();
