@@ -2,7 +2,6 @@ using System.Collections;
 using System.Data;
 using Pure.Collections.Generic;
 using Pure.Primitives.Abstractions.String;
-using Pure.Primitives.Materialized.String;
 using Pure.Primitives.String.Operations;
 using Pure.RelationalSchema.Abstractions.Column;
 using Pure.RelationalSchema.Abstractions.Table;
@@ -49,7 +48,12 @@ internal sealed record RowsEnumerable : IEnumerable<IRow>
                 _table.Columns,
                 x => x,
                 x => new Cell(
-                    new String(rawCells[new TrimmedHash(new HexString(new ColumnHash(x))).TextValue].ToString())
+                    new String(
+                        rawCells[
+                            new TrimmedHash(new HexString(new ColumnHash(x))).TextValue
+                        ]
+                            .ToString()
+                    )
                 ),
                 x => new ColumnHash(x)
             );
