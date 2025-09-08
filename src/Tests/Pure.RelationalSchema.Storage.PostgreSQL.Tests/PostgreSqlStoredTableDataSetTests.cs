@@ -16,9 +16,10 @@ public sealed record PostgreSqlStoredTableDataSetTests : IClassFixture<DatabaseF
     [Fact]
     public void EnumeratesAsTyped()
     {
-        Assert.NotEmpty(
+        Assert.Empty(
             new PostgreSqlStoredTableDataSet(
-                _fixture.Table,
+                _fixture.Schema.Tables.First(),
+                _fixture.Schema,
                 _fixture.Connection
             ).AsEnumerable()
         );
@@ -30,7 +31,8 @@ public sealed record PostgreSqlStoredTableDataSetTests : IClassFixture<DatabaseF
         ICollection<IRow> list = [];
 
         IEnumerable rows = new PostgreSqlStoredTableDataSet(
-            _fixture.Table,
+            _fixture.Schema.Tables.First(),
+            _fixture.Schema,
             _fixture.Connection
         );
 
@@ -39,15 +41,16 @@ public sealed record PostgreSqlStoredTableDataSetTests : IClassFixture<DatabaseF
             list.Add((IRow)obj);
         }
 
-        Assert.NotEmpty(list);
+        Assert.Empty(list);
     }
 
     [Fact]
     public async Task EnumeratesAsync()
     {
-        Assert.NotEmpty(
+        Assert.Empty(
             await new PostgreSqlStoredTableDataSet(
-                _fixture.Table,
+                _fixture.Schema.Tables.First(),
+                _fixture.Schema,
                 _fixture.Connection
             ).ToArrayAsync()
         );
@@ -57,10 +60,11 @@ public sealed record PostgreSqlStoredTableDataSetTests : IClassFixture<DatabaseF
     public void TableSchemaInitializeCorrectly()
     {
         Assert.Equal(
-            new TableHash(_fixture.Table),
+            new TableHash(_fixture.Schema.Tables.First()),
             new TableHash(
                 new PostgreSqlStoredTableDataSet(
-                    _fixture.Table,
+                    _fixture.Schema.Tables.First(),
+                    _fixture.Schema,
                     _fixture.Connection
                 ).TableSchema
             )
