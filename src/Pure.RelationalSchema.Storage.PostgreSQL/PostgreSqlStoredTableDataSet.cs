@@ -1,7 +1,11 @@
 using System.Collections;
 using System.Data;
 using System.Linq.Expressions;
+using Pure.Primitives.Abstractions.String;
+using Pure.Primitives.String.Operations;
+using Pure.RelationalSchema.Abstractions.Schema;
 using Pure.RelationalSchema.Abstractions.Table;
+using Pure.RelationalSchema.HashCodes;
 using Pure.RelationalSchema.Storage.Abstractions;
 
 namespace Pure.RelationalSchema.Storage.PostgreSQL;
@@ -12,11 +16,22 @@ public sealed record PostgreSqlStoredTableDataSet : IStoredTableDataSet
 
     private readonly IAsyncEnumerable<IRow> _rowsAsync;
 
-    public PostgreSqlStoredTableDataSet(ITable tableSchema, IDbConnection connection)
+    public PostgreSqlStoredTableDataSet(
+        ITable tableSchema,
+        ISchema schema,
+        IDbConnection connection
+    )
+        : this(tableSchema, new HexString(new SchemaHash(schema)), connection) { }
+
+    public PostgreSqlStoredTableDataSet(
+        ITable tableSchema,
+        IString schemaName,
+        IDbConnection connection
+    )
         : this(
             tableSchema,
-            new RowsEnumerable(connection, tableSchema).AsQueryable(),
-            new RowsAsyncEnumerable(connection, tableSchema)
+            new RowsEnumerable(connection, schemaName, tableSchema).AsQueryable(),
+            new RowsAsyncEnumerable(connection, schemaName, tableSchema)
         )
     { }
 

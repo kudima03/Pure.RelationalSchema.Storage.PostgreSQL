@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Data;
 using Pure.Collections.Generic;
+using Pure.Primitives.Abstractions.String;
 using Pure.Primitives.Materialized.String;
 using Pure.RelationalSchema.Abstractions.Column;
 using Pure.RelationalSchema.Abstractions.Table;
@@ -16,17 +17,19 @@ internal sealed record RowsEnumerable : IEnumerable<IRow>
 
     private readonly ITable _table;
 
-    public RowsEnumerable(IDbConnection connection, ITable table)
+    private readonly IString _schemaName;
+
+    public RowsEnumerable(IDbConnection connection, IString schemaName, ITable table)
     {
         _connection = connection;
         _table = table;
+        _schemaName = schemaName;
     }
 
     public IEnumerator<IRow> GetEnumerator()
     {
         using IDbCommand cmd = _connection.CreateCommand();
-        cmd.CommandText =
-            $"SELECT * FROM \"{new MaterializedString(_table.Name).Value}\"";
+        cmd.CommandText = new SelectAllStatement(_table, _schemaName).TextValue;
         using IDataReader reader = cmd.ExecuteReader();
 
         while (reader.Read())
