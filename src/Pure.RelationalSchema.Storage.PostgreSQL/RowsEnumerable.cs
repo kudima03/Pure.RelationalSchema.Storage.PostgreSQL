@@ -3,6 +3,7 @@ using System.Data;
 using Pure.Collections.Generic;
 using Pure.Primitives.Abstractions.String;
 using Pure.Primitives.Materialized.String;
+using Pure.Primitives.String.Operations;
 using Pure.RelationalSchema.Abstractions.Column;
 using Pure.RelationalSchema.Abstractions.Table;
 using Pure.RelationalSchema.HashCodes;
@@ -35,7 +36,9 @@ internal sealed record RowsEnumerable : IEnumerable<IRow>
         while (reader.Read())
         {
             IReadOnlyDictionary<string, string> rawCells = _table
-                .Columns.Select(x => new MaterializedString(x.Name).Value)
+                .Columns.Select(x =>
+                    new TrimmedHash(new HexString(new ColumnHash(x))).TextValue
+                )
                 .ToDictionary(x => x, x => reader[x].ToString())!;
 
             IReadOnlyDictionary<IColumn, ICell> cells = new Dictionary<
