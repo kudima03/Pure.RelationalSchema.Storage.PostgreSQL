@@ -49,7 +49,7 @@ internal sealed record RowsEnumerable : IEnumerable<IRow>
                 _table.Columns,
                 x => x,
                 x => new Cell(
-                    new String(rawCells[new MaterializedString(x.Name).Value].ToString())
+                    new String(rawCells[new TrimmedHash(new HexString(new ColumnHash(x))).TextValue].ToString())
                 ),
                 x => new ColumnHash(x)
             );
