@@ -2,7 +2,6 @@ using System.Data;
 using Npgsql;
 using Pure.Primitives.Bool;
 using Pure.RelationalSchema.Abstractions.Column;
-using Pure.RelationalSchema.Abstractions.ForeignKey;
 using Pure.RelationalSchema.Abstractions.Schema;
 using Pure.RelationalSchema.Abstractions.Table;
 using Pure.RelationalSchema.ColumnType;
@@ -74,25 +73,21 @@ public sealed record DatabaseFixture : IDisposable
             ]
         );
 
-        IForeignKey foreignKey1 = new ForeignKey(
+        _ = new ForeignKey(
             table1,
             table1.Columns.First(),
             table2,
             table2.Columns.First()
         );
 
-        IForeignKey foreignKey2 = new ForeignKey(
+        _ = new ForeignKey(
             table1,
             table1.Columns.Skip(1).First(),
             table2,
             table2.Columns.Skip(1).First()
         );
 
-        ISchema schema = new Schema(
-            new String("Test"),
-            [table1, table2],
-            [foreignKey1, foreignKey2]
-        );
+        ISchema schema = new Schema(new String("Test"), [table1, table2], []);
 
         Schema = new PostgreSqlCreatedSchema(schema, Connection);
     }
