@@ -39,18 +39,18 @@ public sealed record DatabaseFixture : IDisposable
 
         IReadOnlyCollection<IColumn> columns1 =
         [
-            new Column(new String("Column1"), new StringColumnType()),
-            new Column(new String("Column2"), new StringColumnType()),
+            new Column(new String("Column1"), new DateColumnType()),
+            new Column(new String("Column2"), new LongColumnType()),
             new Column(new String("Column3"), new StringColumnType()),
-            new Column(new String("Column4"), new StringColumnType()),
+            new Column(new String("Column4"), new ULongColumnType()),
         ];
 
         IReadOnlyCollection<IColumn> columns2 =
         [
-            new Column(new String("Column5"), new StringColumnType()),
-            new Column(new String("Column6"), new StringColumnType()),
-            new Column(new String("Column7"), new StringColumnType()),
-            new Column(new String("Column8"), new StringColumnType()),
+            new Column(new String("Column5"), new DateColumnType()),
+            new Column(new String("Column6"), new LongColumnType()),
+            new Column(new String("Column7"), new TimeColumnType()),
+            new Column(new String("Column8"), new IntColumnType()),
         ];
 
         ITable table1 = new Table(
