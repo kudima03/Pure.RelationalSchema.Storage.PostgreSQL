@@ -40,36 +40,38 @@ public sealed record PostgreSqlStoredTableDataSetWithInsertedRows
     public IString SchemaName =>
         _rowsInserted.Value.BoolValue
             ? _dataSet.SchemaName
-            : throw new ArgumentException();
+            : throw new ArgumentException("Value was not inserted.");
 
     public IDbConnection Connection =>
         _rowsInserted.Value.BoolValue
             ? _dataSet.Connection
-            : throw new ArgumentException();
+            : throw new ArgumentException("Value was not inserted.");
 
     public ITable TableSchema =>
         _rowsInserted.Value.BoolValue
             ? _dataSet.TableSchema
-            : throw new ArgumentException();
+            : throw new ArgumentException("Value was not inserted.");
 
     public Type ElementType =>
         _rowsInserted.Value.BoolValue
             ? _dataSet.ElementType
-            : throw new ArgumentException();
+            : throw new ArgumentException("Value was not inserted.");
 
     public Expression Expression =>
         _rowsInserted.Value.BoolValue
             ? _dataSet.Expression
-            : throw new ArgumentException();
+            : throw new ArgumentException("Value was not inserted.");
 
     public IQueryProvider Provider =>
-        _rowsInserted.Value.BoolValue ? _dataSet.Provider : throw new ArgumentException();
+        _rowsInserted.Value.BoolValue
+            ? _dataSet.Provider
+            : throw new ArgumentException("Value was not inserted.");
 
     public IEnumerator<IRow> GetEnumerator()
     {
         return _rowsInserted.Value.BoolValue
             ? _dataSet.GetEnumerator()
-            : throw new ArgumentException();
+            : throw new ArgumentException("Value was not inserted.");
     }
 
     IEnumerator IEnumerable.GetEnumerator()
@@ -83,6 +85,6 @@ public sealed record PostgreSqlStoredTableDataSetWithInsertedRows
     {
         return _rowsInserted.Value.BoolValue
             ? _dataSet.GetAsyncEnumerator(cancellationToken)
-            : throw new ArgumentException();
+            : throw new ArgumentException("Value was not inserted.");
     }
 }
