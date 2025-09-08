@@ -1,6 +1,7 @@
 using System.Collections;
 using Pure.Primitives.Abstractions.Char;
 using Pure.Primitives.Abstractions.String;
+using Pure.Primitives.Number;
 using Pure.Primitives.Random.Date;
 using Pure.Primitives.Random.DateTime;
 using Pure.Primitives.Random.Number;
@@ -50,7 +51,11 @@ internal sealed record RandomValueForColumnType : IString
                 ),
                 new KeyValuePair<IColumnType, IString>(
                     new StringColumnType(),
-                    new RandomString(new Char((char)65), new Char((char)91))
+                    new RandomString(
+                        new UShort(20),
+                        new Char((char)65),
+                        new Char((char)91)
+                    )
                 ),
                 new KeyValuePair<IColumnType, IString>(
                     new DateColumnType(),
