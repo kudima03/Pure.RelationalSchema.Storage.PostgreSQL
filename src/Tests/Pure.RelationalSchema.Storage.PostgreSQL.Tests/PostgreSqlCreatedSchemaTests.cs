@@ -77,7 +77,7 @@ public sealed record PostgreSqlCreatedSchemaTests : IClassFixture<DatabaseFixtur
         );
 
         ISchema schema = new Schema(
-            new String("Test"),
+            new String("Test1"),
             [table1, table2],
             [foreignKey1, foreignKey2]
         );

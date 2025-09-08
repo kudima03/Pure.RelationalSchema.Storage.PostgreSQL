@@ -1,5 +1,9 @@
 using System.Data;
 using Npgsql;
+using Pure.Primitives.Bool;
+using Pure.RelationalSchema.Abstractions.Column;
+using Pure.RelationalSchema.Abstractions.ForeignKey;
+using Pure.RelationalSchema.Abstractions.Schema;
 using Pure.RelationalSchema.Abstractions.Table;
 using Pure.RelationalSchema.ColumnType;
 using Testcontainers.PostgreSql;
@@ -7,24 +11,19 @@ using String = Pure.Primitives.String.String;
 
 namespace Pure.RelationalSchema.Storage.PostgreSQL.Tests;
 
+using Column = Column.Column;
+using ForeignKey = ForeignKey.ForeignKey;
+using Index = Index.Index;
+using Schema = Schema.Schema;
+using Table = Table.Table;
+
 public sealed record DatabaseFixture : IDisposable
 {
     private readonly PostgreSqlContainer _postgres;
 
     public IDbConnection Connection { get; }
 
-    public ITable Table { get; } =
-        new Table.Table(
-            new String("sample_data"),
-            [
-                new Column.Column(new String("id"), new IntColumnType()),
-                new Column.Column(new String("big_number"), new LongColumnType()),
-                new Column.Column(new String("name"), new StringColumnType()),
-                new Column.Column(new String("created_date"), new DateColumnType()),
-                new Column.Column(new String("created_at"), new TimeColumnType()),
-            ],
-            []
-        );
+    public ISchema Schema { get; }
 
     public DatabaseFixture()
     {
@@ -39,34 +38,63 @@ public sealed record DatabaseFixture : IDisposable
         Connection = new NpgsqlConnection(_postgres.GetConnectionString());
         Connection.Open();
 
-        IDbCommand tableCreationCommand = Connection.CreateCommand();
-        tableCreationCommand.CommandText = """
-            CREATE TABLE sample_data (
-                id INT PRIMARY KEY,
-                big_number BIGINT NOT NULL,
-                name TEXT NOT NULL,
-                created_date DATE NOT NULL,
-                created_at TIMESTAMP NOT NULL
-            );
-            """;
-        _ = tableCreationCommand.ExecuteScalar();
+        IReadOnlyCollection<IColumn> columns1 =
+        [
+            new Column(new String("Column1"), new DateColumnType()),
+            new Column(new String("Column2"), new LongColumnType()),
+            new Column(new String("Column3"), new StringColumnType()),
+            new Column(new String("Column4"), new ULongColumnType()),
+        ];
 
-        IDbCommand tableSeedCommand = Connection.CreateCommand();
-        tableSeedCommand.CommandText = """
-            INSERT INTO sample_data (id, big_number, name, created_date, created_at) VALUES
-            (1, 1234567890123, 'Alice',   '2025-08-01', '2025-08-01 10:15:00'),
-            (2, 9876543210987, 'Bob',     '2025-08-02', '2025-08-02 14:30:00'),
-            (3, 5555555555555, 'Carol',   '2025-08-03', '2025-08-03 18:45:00'),
-            (4, 1111111111111, 'Dave',    '2025-08-04', '2025-08-04 08:00:00'),
-            (5, 2222222222222, 'Eve',     '2025-08-05', '2025-08-05 09:15:00'),
-            (6, 3333333333333, 'Frank',   '2025-08-06', '2025-08-06 11:30:00'),
-            (7, 4444444444444, 'Grace',   '2025-08-07', '2025-08-07 13:45:00'),
-            (8, 6666666666666, 'Heidi',   '2025-08-08', '2025-08-08 16:00:00'),
-            (9, 7777777777777, 'Ivan',    '2025-08-09', '2025-08-09 18:15:00'),
-            (10,8888888888888, 'Judy',    '2025-08-10', '2025-08-10 20:30:00');
-            """;
+        IReadOnlyCollection<IColumn> columns2 =
+        [
+            new Column(new String("Column5"), new DateColumnType()),
+            new Column(new String("Column6"), new LongColumnType()),
+            new Column(new String("Column7"), new TimeColumnType()),
+            new Column(new String("Column8"), new IntColumnType()),
+        ];
 
-        _ = tableSeedCommand.ExecuteScalar();
+        ITable table1 = new Table(
+            new String("Test"),
+            columns1,
+            [
+                new Index(new True(), columns1.Take(1)),
+                new Index(new True(), columns1.Skip(1).Take(1)),
+                new Index(new False(), columns1.Skip(2).Take(2)),
+            ]
+        );
+
+        ITable table2 = new Table(
+            new String("Test"),
+            columns2,
+            [
+                new Index(new True(), columns2.Take(1)),
+                new Index(new True(), columns2.Skip(1).Take(1)),
+                new Index(new False(), columns2.Skip(2).Take(2)),
+            ]
+        );
+
+        IForeignKey foreignKey1 = new ForeignKey(
+            table1,
+            table1.Columns.First(),
+            table2,
+            table2.Columns.First()
+        );
+
+        IForeignKey foreignKey2 = new ForeignKey(
+            table1,
+            table1.Columns.Skip(1).First(),
+            table2,
+            table2.Columns.Skip(1).First()
+        );
+
+        ISchema schema = new Schema(
+            new String("Test"),
+            [table1, table2],
+            [foreignKey1, foreignKey2]
+        );
+
+        Schema = new PostgreSqlCreatedSchema(schema, Connection);
     }
 
     public void Dispose()
