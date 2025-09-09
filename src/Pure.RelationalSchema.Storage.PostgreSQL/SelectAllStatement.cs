@@ -60,7 +60,7 @@ internal sealed record SelectAllStatement : IString
                                 ]
                             )
                         ),
-                        new String(";")
+                        new SemicolonString()
                     )
                 )
         ).TextValue;

@@ -54,7 +54,7 @@ internal sealed record IndexCreationStatement : IString
                         ]
                     ),
                     new ConcatenatedString(
-                        new String("("),
+                        new LeftRoundBracketString(),
                         new JoinedString(
                             new CommaString(),
                             _index.Columns.Select(x => new WrappedString(
@@ -62,7 +62,10 @@ internal sealed record IndexCreationStatement : IString
                                 new TrimmedHash(new HexString(new ColumnHash(x)))
                             ))
                         ),
-                        new String(");")
+                        new ConcatenatedString(
+                            new RightRoundBracketString(),
+                            new SemicolonString()
+                        )
                     )
                 )
         ).TextValue;

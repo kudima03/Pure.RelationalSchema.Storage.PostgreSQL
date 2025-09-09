@@ -67,7 +67,7 @@ internal sealed record ForeignKeyStatement : IString
                             ),
                             new RightRoundBracketString()
                         ),
-                        new String(";")
+                        new SemicolonString()
                     )
                 )
         ).TextValue;
