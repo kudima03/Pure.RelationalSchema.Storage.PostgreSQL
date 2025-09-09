@@ -93,7 +93,7 @@ internal sealed record InsertStatement : IString
                                 new RightRoundBracketString()
                             ))
                         ),
-                        new String(";")
+                        new SemicolonString()
                     )
                 )
         ).TextValue;

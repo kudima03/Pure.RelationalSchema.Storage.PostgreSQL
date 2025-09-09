@@ -35,7 +35,7 @@ internal sealed record SchemaCreationStatement : IString
                                     )
                                 )
                             ),
-                            new String(";")
+                            new SemicolonString()
                         ),
                         new JoinedString(
                             new ConcatenatedString(
