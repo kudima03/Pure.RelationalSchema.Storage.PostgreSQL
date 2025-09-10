@@ -37,7 +37,7 @@ internal sealed record IndexCreationStatement : IString
                         new String("UNIQUE"),
                         new EmptyString()
                     ),
-                    new String("INDEX"),
+                    new String("INDEX IF NOT EXISTS"),
                     new WrappedString(
                         new DoubleQuoteString(),
                         new TrimmedHash(new HexString(new IndexHash(_index)))
