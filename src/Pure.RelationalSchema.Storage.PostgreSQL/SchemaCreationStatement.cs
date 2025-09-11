@@ -27,7 +27,7 @@ internal sealed record SchemaCreationStatement : IString
                     [
                         new ConcatenatedString(
                             new WhitespaceJoinedString(
-                                new String("CREATE SCHEMA"),
+                                new String("CREATE SCHEMA IF NOT EXISTS"),
                                 new WrappedString(
                                     new DoubleQuoteString(),
                                     new TrimmedHash(
@@ -35,7 +35,7 @@ internal sealed record SchemaCreationStatement : IString
                                     )
                                 )
                             ),
-                            new String(";")
+                            new SemicolonString()
                         ),
                         new JoinedString(
                             new ConcatenatedString(

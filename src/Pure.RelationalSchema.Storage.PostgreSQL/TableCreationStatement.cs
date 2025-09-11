@@ -6,7 +6,6 @@ using Pure.Primitives.String.Operations;
 using Pure.RelationalSchema.Abstractions.Table;
 using Pure.RelationalSchema.HashCodes;
 using Char = Pure.Primitives.Char.Char;
-using String = Pure.Primitives.String.String;
 
 namespace Pure.RelationalSchema.Storage.PostgreSQL;
 
@@ -41,7 +40,7 @@ internal sealed record TableCreationStatement : IString
                         ),
                         new ConcatenatedString(
                             new RightRoundBracketString(),
-                            new String(";")
+                            new SemicolonString()
                         )
                     )
                 )

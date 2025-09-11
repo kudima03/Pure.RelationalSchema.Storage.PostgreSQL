@@ -10,7 +10,7 @@ using Pure.RelationalSchema.Storage.Abstractions;
 
 namespace Pure.RelationalSchema.Storage.PostgreSQL;
 
-public sealed record PostgreSqlStoredTableDataSet : IStoredTableDataSet
+public sealed record PostgreSqlStoredTableDataSet : IPostgreSqlStoredTableDataSet
 {
     private readonly IQueryable<IRow> _rows;
 
@@ -31,20 +31,30 @@ public sealed record PostgreSqlStoredTableDataSet : IStoredTableDataSet
         : this(
             tableSchema,
             new RowsEnumerable(connection, schemaName, tableSchema).AsQueryable(),
-            new RowsAsyncEnumerable(connection, schemaName, tableSchema)
+            new RowsAsyncEnumerable(connection, schemaName, tableSchema),
+            connection,
+            schemaName
         )
     { }
 
     private PostgreSqlStoredTableDataSet(
         ITable tableSchema,
         IQueryable<IRow> rows,
-        IAsyncEnumerable<IRow> rowsAsync
+        IAsyncEnumerable<IRow> rowsAsync,
+        IDbConnection connection,
+        IString schemaName
     )
     {
         _rows = rows;
         _rowsAsync = rowsAsync;
         TableSchema = tableSchema;
+        Connection = connection;
+        SchemaName = schemaName;
     }
+
+    public IString SchemaName { get; }
+
+    public IDbConnection Connection { get; }
 
     public ITable TableSchema { get; }
 

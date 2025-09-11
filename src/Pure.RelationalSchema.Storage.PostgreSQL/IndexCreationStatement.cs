@@ -37,7 +37,7 @@ internal sealed record IndexCreationStatement : IString
                         new String("UNIQUE"),
                         new EmptyString()
                     ),
-                    new String("INDEX"),
+                    new String("INDEX IF NOT EXISTS"),
                     new WrappedString(
                         new DoubleQuoteString(),
                         new TrimmedHash(new HexString(new IndexHash(_index)))
@@ -54,7 +54,7 @@ internal sealed record IndexCreationStatement : IString
                         ]
                     ),
                     new ConcatenatedString(
-                        new String("("),
+                        new LeftRoundBracketString(),
                         new JoinedString(
                             new CommaString(),
                             _index.Columns.Select(x => new WrappedString(
@@ -62,7 +62,10 @@ internal sealed record IndexCreationStatement : IString
                                 new TrimmedHash(new HexString(new ColumnHash(x)))
                             ))
                         ),
-                        new String(");")
+                        new ConcatenatedString(
+                            new RightRoundBracketString(),
+                            new SemicolonString()
+                        )
                     )
                 )
         ).TextValue;
