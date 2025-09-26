@@ -29,13 +29,15 @@ internal sealed record ForeignKeyStatement : IString
                     new String("FOREIGN KEY"),
                     new WrappedString(
                         new LeftRoundBracketString(),
-                        new WrappedString(
-                            new DoubleQuoteString(),
-                            new TrimmedHash(
-                                new HexString(
-                                    new ColumnHash(_foreignKey.ReferencingColumn)
-                                )
-                            )
+                        new JoinedString(
+                            new ConcatenatedString(
+                                new CommaString(),
+                                new WhitespaceString()
+                            ),
+                            _foreignKey.ReferencingColumns.Select(x => new WrappedString(
+                                new DoubleQuoteString(),
+                                new TrimmedHash(new HexString(new ColumnHash(x)))
+                            ))
                         ),
                         new RightRoundBracketString()
                     ),
@@ -57,11 +59,15 @@ internal sealed record ForeignKeyStatement : IString
                     new ConcatenatedString(
                         new WrappedString(
                             new LeftRoundBracketString(),
-                            new WrappedString(
-                                new DoubleQuoteString(),
-                                new TrimmedHash(
-                                    new HexString(
-                                        new ColumnHash(_foreignKey.ReferencedColumn)
+                            new JoinedString(
+                                new ConcatenatedString(
+                                    new CommaString(),
+                                    new WhitespaceString()
+                                ),
+                                _foreignKey.ReferencedColumns.Select(
+                                    x => new WrappedString(
+                                        new DoubleQuoteString(),
+                                        new TrimmedHash(new HexString(new ColumnHash(x)))
                                     )
                                 )
                             ),
