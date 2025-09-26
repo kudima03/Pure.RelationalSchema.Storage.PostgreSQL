@@ -64,7 +64,7 @@ internal sealed record ForeignKeyStatement : IString
                                     new CommaString(),
                                     new WhitespaceString()
                                 ),
-                                _foreignKey.ReferencingColumns.Select(
+                                _foreignKey.ReferencedColumns.Select(
                                     x => new WrappedString(
                                         new DoubleQuoteString(),
                                         new TrimmedHash(new HexString(new ColumnHash(x)))
