@@ -75,16 +75,16 @@ public sealed record DatabaseFixture : IDisposable
 
         _ = new ForeignKey(
             table1,
-            table1.Columns.First(),
+            [table1.Columns.First()],
             table2,
-            table2.Columns.First()
+            [table2.Columns.First()]
         );
 
         _ = new ForeignKey(
             table1,
-            table1.Columns.Skip(1).First(),
+            [table1.Columns.Skip(1).First()],
             table2,
-            table2.Columns.Skip(1).First()
+            [table2.Columns.Skip(1).First()]
         );
 
         ISchema schema = new Schema(new String("Test"), [table1, table2], []);
