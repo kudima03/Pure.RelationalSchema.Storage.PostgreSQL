@@ -1,4 +1,6 @@
 using Pure.Primitives.Bool;
+using Pure.Primitives.Number;
+using Pure.Primitives.Random.String;
 using Pure.RelationalSchema.Abstractions.Column;
 using Pure.RelationalSchema.Abstractions.ForeignKey;
 using Pure.RelationalSchema.Abstractions.Schema;
@@ -28,18 +30,18 @@ public sealed record PostgreSqlCreatedSchemaTests : IClassFixture<DatabaseFixtur
     {
         IReadOnlyCollection<IColumn> columns1 =
         [
-            new Column(new String("Column1"), new DateColumnType()),
-            new Column(new String("Column2"), new LongColumnType()),
-            new Column(new String("Column3"), new StringColumnType()),
-            new Column(new String("Column4"), new ULongColumnType()),
+            new Column(new RandomString(new UShort(20)), new DateColumnType()),
+            new Column(new RandomString(new UShort(20)), new LongColumnType()),
+            new Column(new RandomString(new UShort(20)), new StringColumnType()),
+            new Column(new RandomString(new UShort(20)), new ULongColumnType()),
         ];
 
         IReadOnlyCollection<IColumn> columns2 =
         [
-            new Column(new String("Column5"), new DateColumnType()),
-            new Column(new String("Column6"), new LongColumnType()),
-            new Column(new String("Column7"), new TimeColumnType()),
-            new Column(new String("Column8"), new IntColumnType()),
+            new Column(new RandomString(new UShort(20)), new DateColumnType()),
+            new Column(new RandomString (new UShort(20)), new LongColumnType()),
+            new Column(new RandomString (new UShort(20)), new TimeColumnType()),
+            new Column(new RandomString (new UShort(20)), new IntColumnType()),
         ];
 
         ITable table1 = new Table(
@@ -88,11 +90,11 @@ public sealed record PostgreSqlCreatedSchemaTests : IClassFixture<DatabaseFixtur
     [Fact]
     public void CreateSchemaWithNoColumns()
     {
-        ITable table1 = new Table(new String("Test"), [], []);
+        ITable table1 = new Table(new RandomString(new UShort(20)), [], []);
 
-        ITable table2 = new Table(new String("Test1"), [], []);
+        ITable table2 = new Table(new RandomString(new UShort(20)), [], []);
 
-        ISchema schema = new Schema(new String("Test2"), [table1, table2], []);
+        ISchema schema = new Schema(new RandomString(new UShort(20)), [table1, table2], []);
 
         Assert.NotEmpty(new PostgreSqlCreatedSchema(schema, _fixture.Connection).Name);
     }
@@ -102,25 +104,25 @@ public sealed record PostgreSqlCreatedSchemaTests : IClassFixture<DatabaseFixtur
     {
         IReadOnlyCollection<IColumn> columns1 =
         [
-            new Column(new String("Column1"), new DateColumnType()),
-            new Column(new String("Column2"), new LongColumnType()),
-            new Column(new String("Column3"), new StringColumnType()),
-            new Column(new String("Column4"), new ULongColumnType()),
+            new Column(new RandomString (new UShort(20)), new DateColumnType()),
+            new Column(new RandomString (new UShort(20)), new LongColumnType()),
+            new Column(new RandomString (new UShort(20)), new StringColumnType()),
+            new Column(new RandomString (new UShort(20)), new ULongColumnType()),
         ];
 
         IReadOnlyCollection<IColumn> columns2 =
         [
-            new Column(new String("Column5"), new DateColumnType()),
-            new Column(new String("Column6"), new LongColumnType()),
-            new Column(new String("Column7"), new TimeColumnType()),
-            new Column(new String("Column8"), new IntColumnType()),
+            new Column(new RandomString(new UShort(20)), new DateColumnType()),
+            new Column(new RandomString(new UShort(20)), new LongColumnType()),
+            new Column(new RandomString (new UShort(20)), new TimeColumnType()),
+            new Column(new RandomString (new UShort(20)), new IntColumnType()),
         ];
 
-        ITable table1 = new Table(new String("Test"), columns1, []);
+        ITable table1 = new Table(new RandomString(new UShort(20)), columns1, []);
 
-        ITable table2 = new Table(new String("Test"), columns2, []);
+        ITable table2 = new Table(new RandomString(new UShort(20)), columns2, []);
 
-        ISchema schema = new Schema(new String("Test1"), [table1, table2], []);
+        ISchema schema = new Schema(new RandomString(new UShort(20)), [table1, table2], []);
 
         Assert.NotEmpty(new PostgreSqlCreatedSchema(schema, _fixture.Connection).Name);
     }
@@ -128,7 +130,7 @@ public sealed record PostgreSqlCreatedSchemaTests : IClassFixture<DatabaseFixtur
     [Fact]
     public void CreateSchemaWithNoTables()
     {
-        ISchema schema = new Schema(new String("Test1"), [], []);
+        ISchema schema = new Schema(new RandomString(new UShort(20)), [], []);
 
         Assert.NotEmpty(new PostgreSqlCreatedSchema(schema, _fixture.Connection).Name);
     }
@@ -138,22 +140,22 @@ public sealed record PostgreSqlCreatedSchemaTests : IClassFixture<DatabaseFixtur
     {
         IReadOnlyCollection<IColumn> columns1 =
         [
-            new Column(new String("Column1"), new DateColumnType()),
-            new Column(new String("Column2"), new LongColumnType()),
-            new Column(new String("Column3"), new StringColumnType()),
-            new Column(new String("Column4"), new ULongColumnType()),
+            new Column(new RandomString (new UShort(20)), new DateColumnType()),
+            new Column(new RandomString (new UShort(20)), new LongColumnType()),
+            new Column(new RandomString (new UShort(20)), new StringColumnType()),
+            new Column(new RandomString (new UShort(20)), new ULongColumnType()),
         ];
 
         IReadOnlyCollection<IColumn> columns2 =
         [
-            new Column(new String("Column5"), new DateColumnType()),
-            new Column(new String("Column6"), new LongColumnType()),
-            new Column(new String("Column7"), new TimeColumnType()),
-            new Column(new String("Column8"), new IntColumnType()),
+            new Column(new RandomString (new UShort(20)), new DateColumnType()),
+            new Column(new RandomString (new UShort(20)), new LongColumnType()),
+            new Column(new RandomString (new UShort(20)), new TimeColumnType()),
+            new Column(new RandomString (new UShort(20)), new IntColumnType()),
         ];
 
         ITable table1 = new Table(
-            new String("Test"),
+            new RandomString(new UShort(20)),
             columns1,
             [
                 new Index(new True(), columns1.Take(1)),
@@ -163,7 +165,7 @@ public sealed record PostgreSqlCreatedSchemaTests : IClassFixture<DatabaseFixtur
         );
 
         ITable table2 = new Table(
-            new String("Test"),
+            new RandomString(new UShort(20)),
             columns2,
             [
                 new Index(new True(), columns2.Take(1)),
@@ -172,7 +174,7 @@ public sealed record PostgreSqlCreatedSchemaTests : IClassFixture<DatabaseFixtur
             ]
         );
 
-        ISchema schema = new Schema(new String("Test1"), [table1, table2], []);
+        ISchema schema = new Schema(new RandomString(new UShort(20)), [table1, table2], []);
 
         Assert.NotEmpty(new PostgreSqlCreatedSchema(schema, _fixture.Connection).Name);
     }
@@ -182,37 +184,35 @@ public sealed record PostgreSqlCreatedSchemaTests : IClassFixture<DatabaseFixtur
     {
         IReadOnlyCollection<IColumn> columns1 =
         [
-            new Column(new String("Column1"), new DateColumnType()),
-            new Column(new String("Column2"), new LongColumnType()),
-            new Column(new String("Column3"), new IntColumnType()),
-            new Column(new String("Column4"), new ULongColumnType()),
+            new Column(new RandomString (new UShort(20)), new DateColumnType()),
+            new Column(new RandomString (new UShort(20)), new LongColumnType()),
+            new Column(new RandomString (new UShort(20)), new IntColumnType()),
+            new Column(new RandomString (new UShort(20)), new ULongColumnType()),
         ];
 
         IReadOnlyCollection<IColumn> columns2 =
         [
-            new Column(new String("Column5"), new DateColumnType()),
-            new Column(new String("Column6"), new LongColumnType()),
-            new Column(new String("Column7"), new IntColumnType()),
-            new Column(new String("Column8"), new ULongColumnType()),
+            new Column(new RandomString (new UShort(20)), new DateColumnType()),
+            new Column(new RandomString (new UShort(20)), new LongColumnType()),
+            new Column(new RandomString (new UShort(20)), new IntColumnType()),
+            new Column(new RandomString (new UShort(20)), new ULongColumnType()),
         ];
 
         ITable table1 = new Table(
-            new String("Test"),
+            new RandomString(new UShort(20)),
             columns1,
             [
-                new Index(new True(), columns1.Take(1)),
-                new Index(new True(), columns1.Skip(1).Take(1)),
-                new Index(new False(), columns1.Skip(2).Take(2)),
+                new Index(new True(), columns1.Take(2)),
+                new Index(new True(), columns1.TakeLast(2)),
             ]
         );
 
         ITable table2 = new Table(
-            new String("Test"),
+            new RandomString(new UShort(20)),
             columns2,
             [
-                new Index(new True(), columns2.Take(1)),
-                new Index(new True(), columns2.Skip(1).Take(1)),
-                new Index(new False(), columns2.Skip(2).Take(2)),
+                new Index(new True(), columns2.Take(2)),
+                new Index(new True(), columns2.TakeLast(2)),
             ]
         );
 
@@ -231,7 +231,7 @@ public sealed record PostgreSqlCreatedSchemaTests : IClassFixture<DatabaseFixtur
         );
 
         ISchema schema = new Schema(
-            new String("Test1"),
+            new RandomString(new UShort(20)),
             [table1, table2],
             [foreignKey1, foreignKey2]
         );
@@ -244,22 +244,22 @@ public sealed record PostgreSqlCreatedSchemaTests : IClassFixture<DatabaseFixtur
     {
         IReadOnlyCollection<IColumn> columns1 =
         [
-            new Column(new String("Column1"), new DateColumnType()),
-            new Column(new String("Column2"), new LongColumnType()),
-            new Column(new String("Column3"), new StringColumnType()),
-            new Column(new String("Column4"), new ULongColumnType()),
+            new Column(new RandomString (new UShort(20)), new DateColumnType()),
+            new Column(new RandomString (new UShort(20)), new LongColumnType()),
+            new Column(new RandomString (new UShort(20)), new StringColumnType()),
+            new Column(new RandomString (new UShort(20)), new ULongColumnType()),
         ];
 
         IReadOnlyCollection<IColumn> columns2 =
         [
-            new Column(new String("Column5"), new DateColumnType()),
-            new Column(new String("Column6"), new LongColumnType()),
-            new Column(new String("Column7"), new TimeColumnType()),
-            new Column(new String("Column8"), new IntColumnType()),
+            new Column(new RandomString (new UShort(20)), new DateColumnType()),
+            new Column(new RandomString (new UShort(20)), new LongColumnType()),
+            new Column(new RandomString (new UShort(20)), new TimeColumnType()),
+            new Column(new RandomString (new UShort(20)), new IntColumnType()),
         ];
 
         ITable table1 = new Table(
-            new String("Test"),
+            new RandomString(new UShort(20)),
             columns1,
             [
                 new Index(new True(), columns1.Take(1)),
@@ -269,7 +269,7 @@ public sealed record PostgreSqlCreatedSchemaTests : IClassFixture<DatabaseFixtur
         );
 
         ITable table2 = new Table(
-            new String("Test"),
+            new RandomString(new UShort(20)),
             columns2,
             [
                 new Index(new True(), columns2.Take(1)),
@@ -293,12 +293,11 @@ public sealed record PostgreSqlCreatedSchemaTests : IClassFixture<DatabaseFixtur
         );
 
         ISchema schema = new Schema(
-            new String("Test1"),
+            new RandomString(new UShort(20)),
             [table1, table2],
             [foreignKey1, foreignKey2]
         );
 
-        //_ = new PostgreSqlSchemaCreationStatement(schema).TextValue;
         Assert.NotEmpty(
             new PostgreSqlCreatedSchema(
                 new PostgreSqlCreatedSchema(schema, _fixture.Connection),
