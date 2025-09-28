@@ -19,7 +19,7 @@
     <PackageReference Include="Pure.Primitives.Choices" Version="0.3.0" />
     <PackageReference Include="Pure.Primitives.String.Operations" Version="0.3.0" />
     <PackageReference Include="Pure.Primitives.Switches" Version="0.1.0" />
-    <PackageReference Include="Pure.RelationalSchema" Version="1.0.0" />
+    <PackageReference Include="Pure.RelationalSchema" Version="1.1.0" />
     <PackageReference Include="Pure.RelationalSchema.HashCodes" Version="2.0.0" />
     <PackageReference Include="Pure.RelationalSchema.Storage" Version="0.1.0-preview.5.0.0" />
   </ItemGroup>
