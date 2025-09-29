@@ -8,6 +8,7 @@ using Pure.Primitives.String.Operations;
 using Pure.RelationalSchema.Abstractions.Table;
 using Pure.RelationalSchema.HashCodes;
 using Pure.RelationalSchema.Storage.Abstractions;
+using Pure.RelationalSchema.Storage.HashCodes;
 
 namespace Pure.RelationalSchema.Storage.PostgreSQL;
 
@@ -30,7 +31,7 @@ public sealed record PostgreSqlStoredTableDataSetWithInsertedRows
             command.CommandText = new InsertStatement(
                 new TrimmedHash(new HexString(new TableHash(dataSet.TableSchema))),
                 dataSet.SchemaName,
-                rows
+                rows.DistinctBy(x => ((IString)new HexString(new RowHash(x))).TextValue)
             ).TextValue;
             _ = command.ExecuteNonQuery();
             return new True();
