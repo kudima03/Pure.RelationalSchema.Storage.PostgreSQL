@@ -39,9 +39,9 @@ public sealed record PostgreSqlCreatedSchemaTests : IClassFixture<DatabaseFixtur
         IReadOnlyCollection<IColumn> columns2 =
         [
             new Column(new RandomString(new UShort(20)), new DateColumnType()),
-            new Column(new RandomString (new UShort(20)), new LongColumnType()),
-            new Column(new RandomString (new UShort(20)), new TimeColumnType()),
-            new Column(new RandomString (new UShort(20)), new IntColumnType()),
+            new Column(new RandomString(new UShort(20)), new LongColumnType()),
+            new Column(new RandomString(new UShort(20)), new TimeColumnType()),
+            new Column(new RandomString(new UShort(20)), new IntColumnType()),
         ];
 
         ITable table1 = new Table(
@@ -94,7 +94,11 @@ public sealed record PostgreSqlCreatedSchemaTests : IClassFixture<DatabaseFixtur
 
         ITable table2 = new Table(new RandomString(new UShort(20)), [], []);
 
-        ISchema schema = new Schema(new RandomString(new UShort(20)), [table1, table2], []);
+        ISchema schema = new Schema(
+            new RandomString(new UShort(20)),
+            [table1, table2],
+            []
+        );
 
         Assert.NotEmpty(new PostgreSqlCreatedSchema(schema, _fixture.Connection).Name);
     }
@@ -104,25 +108,29 @@ public sealed record PostgreSqlCreatedSchemaTests : IClassFixture<DatabaseFixtur
     {
         IReadOnlyCollection<IColumn> columns1 =
         [
-            new Column(new RandomString (new UShort(20)), new DateColumnType()),
-            new Column(new RandomString (new UShort(20)), new LongColumnType()),
-            new Column(new RandomString (new UShort(20)), new StringColumnType()),
-            new Column(new RandomString (new UShort(20)), new ULongColumnType()),
+            new Column(new RandomString(new UShort(20)), new DateColumnType()),
+            new Column(new RandomString(new UShort(20)), new LongColumnType()),
+            new Column(new RandomString(new UShort(20)), new StringColumnType()),
+            new Column(new RandomString(new UShort(20)), new ULongColumnType()),
         ];
 
         IReadOnlyCollection<IColumn> columns2 =
         [
             new Column(new RandomString(new UShort(20)), new DateColumnType()),
             new Column(new RandomString(new UShort(20)), new LongColumnType()),
-            new Column(new RandomString (new UShort(20)), new TimeColumnType()),
-            new Column(new RandomString (new UShort(20)), new IntColumnType()),
+            new Column(new RandomString(new UShort(20)), new TimeColumnType()),
+            new Column(new RandomString(new UShort(20)), new IntColumnType()),
         ];
 
         ITable table1 = new Table(new RandomString(new UShort(20)), columns1, []);
 
         ITable table2 = new Table(new RandomString(new UShort(20)), columns2, []);
 
-        ISchema schema = new Schema(new RandomString(new UShort(20)), [table1, table2], []);
+        ISchema schema = new Schema(
+            new RandomString(new UShort(20)),
+            [table1, table2],
+            []
+        );
 
         Assert.NotEmpty(new PostgreSqlCreatedSchema(schema, _fixture.Connection).Name);
     }
@@ -140,18 +148,18 @@ public sealed record PostgreSqlCreatedSchemaTests : IClassFixture<DatabaseFixtur
     {
         IReadOnlyCollection<IColumn> columns1 =
         [
-            new Column(new RandomString (new UShort(20)), new DateColumnType()),
-            new Column(new RandomString (new UShort(20)), new LongColumnType()),
-            new Column(new RandomString (new UShort(20)), new StringColumnType()),
-            new Column(new RandomString (new UShort(20)), new ULongColumnType()),
+            new Column(new RandomString(new UShort(20)), new DateColumnType()),
+            new Column(new RandomString(new UShort(20)), new LongColumnType()),
+            new Column(new RandomString(new UShort(20)), new StringColumnType()),
+            new Column(new RandomString(new UShort(20)), new ULongColumnType()),
         ];
 
         IReadOnlyCollection<IColumn> columns2 =
         [
-            new Column(new RandomString (new UShort(20)), new DateColumnType()),
-            new Column(new RandomString (new UShort(20)), new LongColumnType()),
-            new Column(new RandomString (new UShort(20)), new TimeColumnType()),
-            new Column(new RandomString (new UShort(20)), new IntColumnType()),
+            new Column(new RandomString(new UShort(20)), new DateColumnType()),
+            new Column(new RandomString(new UShort(20)), new LongColumnType()),
+            new Column(new RandomString(new UShort(20)), new TimeColumnType()),
+            new Column(new RandomString(new UShort(20)), new IntColumnType()),
         ];
 
         ITable table1 = new Table(
@@ -174,7 +182,11 @@ public sealed record PostgreSqlCreatedSchemaTests : IClassFixture<DatabaseFixtur
             ]
         );
 
-        ISchema schema = new Schema(new RandomString(new UShort(20)), [table1, table2], []);
+        ISchema schema = new Schema(
+            new RandomString(new UShort(20)),
+            [table1, table2],
+            []
+        );
 
         Assert.NotEmpty(new PostgreSqlCreatedSchema(schema, _fixture.Connection).Name);
     }
@@ -184,18 +196,18 @@ public sealed record PostgreSqlCreatedSchemaTests : IClassFixture<DatabaseFixtur
     {
         IReadOnlyCollection<IColumn> columns1 =
         [
-            new Column(new RandomString (new UShort(20)), new DateColumnType()),
-            new Column(new RandomString (new UShort(20)), new LongColumnType()),
-            new Column(new RandomString (new UShort(20)), new IntColumnType()),
-            new Column(new RandomString (new UShort(20)), new ULongColumnType()),
+            new Column(new RandomString(new UShort(20)), new DateColumnType()),
+            new Column(new RandomString(new UShort(20)), new LongColumnType()),
+            new Column(new RandomString(new UShort(20)), new IntColumnType()),
+            new Column(new RandomString(new UShort(20)), new ULongColumnType()),
         ];
 
         IReadOnlyCollection<IColumn> columns2 =
         [
-            new Column(new RandomString (new UShort(20)), new DateColumnType()),
-            new Column(new RandomString (new UShort(20)), new LongColumnType()),
-            new Column(new RandomString (new UShort(20)), new IntColumnType()),
-            new Column(new RandomString (new UShort(20)), new ULongColumnType()),
+            new Column(new RandomString(new UShort(20)), new DateColumnType()),
+            new Column(new RandomString(new UShort(20)), new LongColumnType()),
+            new Column(new RandomString(new UShort(20)), new IntColumnType()),
+            new Column(new RandomString(new UShort(20)), new ULongColumnType()),
         ];
 
         ITable table1 = new Table(
@@ -244,18 +256,18 @@ public sealed record PostgreSqlCreatedSchemaTests : IClassFixture<DatabaseFixtur
     {
         IReadOnlyCollection<IColumn> columns1 =
         [
-            new Column(new RandomString (new UShort(20)), new DateColumnType()),
-            new Column(new RandomString (new UShort(20)), new LongColumnType()),
-            new Column(new RandomString (new UShort(20)), new StringColumnType()),
-            new Column(new RandomString (new UShort(20)), new ULongColumnType()),
+            new Column(new RandomString(new UShort(20)), new DateColumnType()),
+            new Column(new RandomString(new UShort(20)), new LongColumnType()),
+            new Column(new RandomString(new UShort(20)), new StringColumnType()),
+            new Column(new RandomString(new UShort(20)), new ULongColumnType()),
         ];
 
         IReadOnlyCollection<IColumn> columns2 =
         [
-            new Column(new RandomString (new UShort(20)), new DateColumnType()),
-            new Column(new RandomString (new UShort(20)), new LongColumnType()),
-            new Column(new RandomString (new UShort(20)), new TimeColumnType()),
-            new Column(new RandomString (new UShort(20)), new IntColumnType()),
+            new Column(new RandomString(new UShort(20)), new DateColumnType()),
+            new Column(new RandomString(new UShort(20)), new LongColumnType()),
+            new Column(new RandomString(new UShort(20)), new TimeColumnType()),
+            new Column(new RandomString(new UShort(20)), new IntColumnType()),
         ];
 
         ITable table1 = new Table(
