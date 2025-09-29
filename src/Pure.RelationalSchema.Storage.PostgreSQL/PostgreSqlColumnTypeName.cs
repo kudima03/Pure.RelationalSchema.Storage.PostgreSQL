@@ -28,7 +28,7 @@ internal sealed record PostgreSqlColumnTypeName : IString
                     new String("integer")
                 ),
                 new KeyValuePair<IColumnType, IString>(
-                    new IntColumnType(),
+                    new BoolColumnType(),
                     new String("boolean")
                 ),
                 new KeyValuePair<IColumnType, IString>(
