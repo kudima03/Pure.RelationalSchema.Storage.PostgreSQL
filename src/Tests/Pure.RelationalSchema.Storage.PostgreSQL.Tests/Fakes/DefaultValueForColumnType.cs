@@ -1,20 +1,22 @@
 using System.Collections;
 using Pure.Primitives.Abstractions.Char;
 using Pure.Primitives.Abstractions.String;
+using Pure.Primitives.Date;
 using Pure.Primitives.Switches.String;
+using Pure.Primitives.Time;
 using Pure.RelationalSchema.Abstractions.ColumnType;
 using Pure.RelationalSchema.ColumnType;
 using Pure.RelationalSchema.HashCodes;
 using Char = Pure.Primitives.Char.Char;
 using String = Pure.Primitives.String.String;
 
-namespace Pure.RelationalSchema.Storage.PostgreSQL;
+namespace Pure.RelationalSchema.Storage.PostgreSQL.Tests.Fakes;
 
-internal sealed record PostgreSqlColumnTypeName : IString
+internal sealed record DefaultValueForColumnType : IString
 {
     private readonly IColumnType _columnType;
 
-    public PostgreSqlColumnTypeName(IColumnType columnType)
+    public DefaultValueForColumnType(IColumnType columnType)
     {
         _columnType = columnType;
     }
@@ -25,43 +27,44 @@ internal sealed record PostgreSqlColumnTypeName : IString
             [
                 new KeyValuePair<IColumnType, IString>(
                     new IntColumnType(),
-                    new String("integer")
+                    new String(int.MaxValue.ToString())
                 ),
                 new KeyValuePair<IColumnType, IString>(
                     new LongColumnType(),
-                    new String("bigint")
+                    new String(uint.MaxValue.ToString())
                 ),
                 new KeyValuePair<IColumnType, IString>(
                     new UShortColumnType(),
-                    new String("integer")
+                    new String(ushort.MaxValue.ToString())
                 ),
                 new KeyValuePair<IColumnType, IString>(
                     new UIntColumnType(),
-                    new String("bigint")
+                    new String(uint.MaxValue.ToString())
                 ),
                 new KeyValuePair<IColumnType, IString>(
                     new ULongColumnType(),
-                    new String("numeric")
+                    new String(ulong.MaxValue.ToString())
                 ),
                 new KeyValuePair<IColumnType, IString>(
                     new StringColumnType(),
-                    new String("text")
+                    new String("Hello, world!")
                 ),
                 new KeyValuePair<IColumnType, IString>(
                     new DateColumnType(),
-                    new String("date")
+                    new String(new Date(new DateOnly(1970, 1, 1)))
                 ),
                 new KeyValuePair<IColumnType, IString>(
                     new DateTimeColumnType(),
-                    new String("timestamp")
+                    new String(
+                        new Primitives.DateTime.DateTime(
+                            new Date(new DateOnly(1970, 1, 1)),
+                            new Time(new TimeOnly(23, 59, 59))
+                        )
+                    )
                 ),
                 new KeyValuePair<IColumnType, IString>(
                     new TimeColumnType(),
-                    new String("time")
-                ),
-                new KeyValuePair<IColumnType, IString>(
-                    new DeterminedHashColumnType(),
-                    new String("bytea")
+                    new String(new Time(new TimeOnly(23, 59, 59)))
                 ),
             ],
             x => new ColumnTypeHash(x)
