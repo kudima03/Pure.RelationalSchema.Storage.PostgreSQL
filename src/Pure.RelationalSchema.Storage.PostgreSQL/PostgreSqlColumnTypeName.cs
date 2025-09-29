@@ -1,5 +1,4 @@
 using System.Collections;
-using Pure.HashCodes;
 using Pure.Primitives.Abstractions.Char;
 using Pure.Primitives.Abstractions.String;
 using Pure.Primitives.Switches.String;
@@ -62,7 +61,7 @@ internal sealed record PostgreSqlColumnTypeName : IString
                 ),
                 new KeyValuePair<IColumnType, IString>(
                     new DeterminedHashColumnType(),
-                    new String("bytea(32)")
+                    new String("bytea")
                 ),
             ],
             x => new ColumnTypeHash(x)
