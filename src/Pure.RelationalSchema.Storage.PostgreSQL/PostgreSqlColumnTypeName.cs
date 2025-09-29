@@ -28,6 +28,10 @@ internal sealed record PostgreSqlColumnTypeName : IString
                     new String("integer")
                 ),
                 new KeyValuePair<IColumnType, IString>(
+                    new BoolColumnType(),
+                    new String("boolean")
+                ),
+                new KeyValuePair<IColumnType, IString>(
                     new LongColumnType(),
                     new String("bigint")
                 ),
