@@ -3,10 +3,8 @@ using Pure.Primitives.Abstractions.Char;
 using Pure.Primitives.Abstractions.String;
 using Pure.Primitives.Number;
 using Pure.Primitives.Random.Date;
-using Pure.Primitives.Random.DateTime;
 using Pure.Primitives.Random.Number;
 using Pure.Primitives.Random.String;
-using Pure.Primitives.Random.Time;
 using Pure.Primitives.Switches.String;
 using Pure.RelationalSchema.Abstractions.ColumnType;
 using Pure.RelationalSchema.ColumnType;
@@ -63,11 +61,11 @@ internal sealed record RandomValueForColumnType : IString
                 ),
                 new KeyValuePair<IColumnType, IString>(
                     new DateTimeColumnType(),
-                    new String(new RandomDateTime())
+                    new String(DateTime.Now.ToString())
                 ),
                 new KeyValuePair<IColumnType, IString>(
                     new TimeColumnType(),
-                    new String(new RandomTime())
+                    new String(DateTime.Now.ToShortTimeString())
                 ),
             ],
             x => new ColumnTypeHash(x)

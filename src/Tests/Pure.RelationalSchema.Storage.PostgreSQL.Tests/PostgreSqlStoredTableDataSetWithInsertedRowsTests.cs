@@ -1,5 +1,6 @@
 using Pure.Collections.Generic;
 using Pure.RelationalSchema.Abstractions.Column;
+using Pure.RelationalSchema.Abstractions.Table;
 using Pure.RelationalSchema.HashCodes;
 using Pure.RelationalSchema.Storage.Abstractions;
 using Pure.RelationalSchema.Storage.PostgreSQL.Tests.Fakes;
@@ -15,53 +16,78 @@ public sealed record PostgreSqlStoredTableDataSetWithInsertedRowsTests
     [Fact]
     public void InsertMultipleRows()
     {
-        IPostgreSqlStoredTableDataSet schema = new PostgreSqlStoredTableDataSet(
-            _fixture!.Schema.Tables.First(),
-            _fixture.Schema,
+        IPostgreSqlStoredSchemaDataSet schema = new PostgreSqlStoredSchemaDataSet(
+            _fixture!.Schema,
             _fixture.Connection
         );
 
-        IEnumerable<IRow> rowsToInsert = Enumerable
-            .Range(0, 100)
-            .Select(_ => new Row(
-                new Dictionary<IColumn, IColumn, ICell>(
-                    schema.TableSchema.Columns,
-                    x => x,
-                    x => new Cell(new RandomValueForColumnType(x.Type)),
-                    x => new ColumnHash(x)
-                )
-            ));
+        IEnumerable<IGrouping<ITable, IRow>> rows = schema.TablesDatasets.Keys.Select(
+            x => new Grouping(
+                x,
+                Enumerable
+                    .Range(0, 100)
+                    .Select(_ => new Row(
+                        new Dictionary<IColumn, IColumn, ICell>(
+                            x.Columns,
+                            x => x,
+                            x => new Cell(new RandomValueForColumnType(x.Type)),
+                            x => new ColumnHash(x)
+                        )
+                    ))
+            )
+        );
 
-        IPostgreSqlStoredTableDataSet dataSetWithInsertedRows =
-            new PostgreSqlStoredTableDataSetWithInsertedRows(schema, rowsToInsert);
+        IStoredSchemaDataSet dataSetWithInsertedRows =
+            new PostgreSqlStoredSchemaDataSetWithInsertedRows(
+                _fixture!.Schema,
+                schema,
+                rows
+            );
 
-        Assert.Equal(100, dataSetWithInsertedRows.Count());
+        Assert.Equal(
+            200,
+            dataSetWithInsertedRows.TablesDatasets.SelectMany(x => x.Value).Count()
+        );
     }
 
     [Fact]
     public void InsertOnlyDistinctRows()
     {
-        IPostgreSqlStoredTableDataSet schema = new PostgreSqlStoredTableDataSet(
-            _fixture!.Schema.Tables.First(),
-            _fixture.Schema,
+        IPostgreSqlStoredSchemaDataSet schema = new PostgreSqlStoredSchemaDataSet(
+            _fixture!.Schema,
             _fixture.Connection
         );
 
-        IEnumerable<IRow> rowsToInsert = Enumerable
-            .Range(0, 100)
-            .Select(_ => new Row(
-                new Dictionary<IColumn, IColumn, ICell>(
-                    schema.TableSchema.Columns,
-                    x => x,
-                    x => new Cell(new DefaultValueForColumnType(x.Type)),
-                    x => new ColumnHash(x)
-                )
-            ));
+        IEnumerable<IGrouping<ITable, IRow>> rows = schema.TablesDatasets.Keys.Select(
+            x => new Grouping(
+                x,
+                Enumerable
+                    .Range(0, 100)
+                    .Select(_ => new Row(
+                        new Dictionary<IColumn, IColumn, ICell>(
+                            x.Columns,
+                            x => x,
+                            x => new Cell(new DefaultValueForColumnType(x.Type)),
+                            x => new ColumnHash(x)
+                        )
+                    ))
+            )
+        );
 
-        IPostgreSqlStoredTableDataSet dataSetWithInsertedRows =
-            new PostgreSqlStoredTableDataSetWithInsertedRows(schema, rowsToInsert);
+        IStoredSchemaDataSet dataSetWithInsertedRows =
+            new PostgreSqlStoredSchemaDataSetWithInsertedRows(
+                _fixture!.Schema,
+                schema,
+                rows
+            );
 
-        Assert.Equal(1, dataSetWithInsertedRows.Count());
+        Assert.Equal(
+            1,
+            dataSetWithInsertedRows
+                .TablesDatasets.Select(x => x.Value.Count())
+                .Distinct()
+                .Single()
+        );
     }
 
     public void Dispose()

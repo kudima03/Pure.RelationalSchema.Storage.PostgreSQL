@@ -1,9 +1,7 @@
 using System.Collections;
 using Pure.Primitives.Abstractions.Char;
 using Pure.Primitives.Abstractions.String;
-using Pure.Primitives.Date;
 using Pure.Primitives.Switches.String;
-using Pure.Primitives.Time;
 using Pure.RelationalSchema.Abstractions.ColumnType;
 using Pure.RelationalSchema.ColumnType;
 using Pure.RelationalSchema.HashCodes;
@@ -51,20 +49,15 @@ internal sealed record DefaultValueForColumnType : IString
                 ),
                 new KeyValuePair<IColumnType, IString>(
                     new DateColumnType(),
-                    new String(new Date(new DateOnly(1970, 1, 1)))
+                    new String(DateTime.Today.ToShortDateString())
                 ),
                 new KeyValuePair<IColumnType, IString>(
                     new DateTimeColumnType(),
-                    new String(
-                        new Primitives.DateTime.DateTime(
-                            new Date(new DateOnly(1970, 1, 1)),
-                            new Time(new TimeOnly(23, 59, 59))
-                        )
-                    )
+                    new String(DateTime.Today.ToString())
                 ),
                 new KeyValuePair<IColumnType, IString>(
                     new TimeColumnType(),
-                    new String(new Time(new TimeOnly(23, 59, 59)))
+                    new String(new TimeOnly(23, 59, 59).ToString())
                 ),
             ],
             x => new ColumnTypeHash(x)
