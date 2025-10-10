@@ -10,7 +10,7 @@ using Pure.RelationalSchema.Storage.Abstractions;
 
 namespace Pure.RelationalSchema.Storage.PostgreSQL;
 
-public sealed record PostgreSqlStoredTableDataSet : IPostgreSqlStoredTableDataSet
+public sealed record PostgreSqlStoredTableDataSet : IStoredTableDataSet
 {
     private readonly IQueryable<IRow> _rows;
 

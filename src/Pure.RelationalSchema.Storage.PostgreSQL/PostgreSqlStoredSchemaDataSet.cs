@@ -8,17 +8,17 @@ using Pure.RelationalSchema.Storage.Abstractions;
 
 namespace Pure.RelationalSchema.Storage.PostgreSQL;
 
-public sealed record PostgreSqlStoredSchemaDataSet : IStoredSchemaDataSet
+public sealed record PostgreSqlStoredSchemaDataSet : IPostgreSqlStoredSchemaDataSet
 {
     private readonly ISchema _schema;
-
-    private readonly IDbConnection _connection;
 
     public PostgreSqlStoredSchemaDataSet(ISchema schema, IDbConnection connection)
     {
         _schema = schema;
-        _connection = connection;
+        Connection = connection;
     }
+
+    public IDbConnection Connection { get; }
 
     public IReadOnlyDictionary<ITable, IStoredTableDataSet> TablesDatasets =>
         new Dictionary<ITable, ITable, IStoredTableDataSet>(
@@ -27,7 +27,7 @@ public sealed record PostgreSqlStoredSchemaDataSet : IStoredSchemaDataSet
             x => new PostgreSqlStoredTableDataSet(
                 x,
                 new TrimmedHash(new HexString(new SchemaHash(_schema))),
-                _connection
+                Connection
             ),
             x => new TableHash(x)
         );

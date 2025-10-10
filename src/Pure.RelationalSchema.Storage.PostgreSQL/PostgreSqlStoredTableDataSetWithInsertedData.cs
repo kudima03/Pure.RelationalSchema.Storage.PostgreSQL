@@ -12,41 +12,32 @@ using Pure.RelationalSchema.Storage.HashCodes;
 
 namespace Pure.RelationalSchema.Storage.PostgreSQL;
 
-public sealed record PostgreSqlStoredTableDataSetWithInsertedRows
-    : IPostgreSqlStoredTableDataSet
+internal sealed record PostgreSqlStoredTableDataSetWithInsertedRows : IStoredTableDataSet
 {
-    private readonly IPostgreSqlStoredTableDataSet _dataSet;
+    private readonly IStoredTableDataSet _dataSet;
 
     private readonly Lazy<IBool> _rowsInserted;
 
     public PostgreSqlStoredTableDataSetWithInsertedRows(
-        IPostgreSqlStoredTableDataSet dataSet,
+        IStoredTableDataSet dataSet,
+        IDbConnection connection,
+        IString schemaName,
         IEnumerable<IRow> rows
     )
     {
         _dataSet = dataSet;
         _rowsInserted = new Lazy<IBool>(() =>
         {
-            IDbCommand command = dataSet.Connection.CreateCommand();
+            IDbCommand command = connection.CreateCommand();
             command.CommandText = new InsertStatement(
                 new TrimmedHash(new HexString(new TableHash(dataSet.TableSchema))),
-                dataSet.SchemaName,
+                schemaName,
                 rows.DistinctBy(x => ((IString)new HexString(new RowHash(x))).TextValue)
             ).TextValue;
             _ = command.ExecuteNonQuery();
             return new True();
         });
     }
-
-    public IString SchemaName =>
-        _rowsInserted.Value.BoolValue
-            ? _dataSet.SchemaName
-            : throw new ArgumentException("Value was not inserted.");
-
-    public IDbConnection Connection =>
-        _rowsInserted.Value.BoolValue
-            ? _dataSet.Connection
-            : throw new ArgumentException("Value was not inserted.");
 
     public ITable TableSchema =>
         _rowsInserted.Value.BoolValue
