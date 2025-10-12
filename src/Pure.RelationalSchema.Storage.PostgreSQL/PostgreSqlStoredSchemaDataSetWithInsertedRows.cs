@@ -36,7 +36,7 @@ public sealed record PostgreSqlStoredSchemaDataSetWithInsertedRows
             ITable,
             IStoredTableDataSet
         >(
-            _dataset.TablesDatasets,
+            _rows.Select(x => new KeyValuePair<ITable, IStoredTableDataSet>(x.Key, _dataset.TablesDatasets[x.Key])),
             x => x.Key,
             x => new PostgreSqlStoredTableDataSetWithInsertedRows(
                 x.Value,
