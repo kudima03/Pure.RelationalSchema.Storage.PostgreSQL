@@ -31,7 +31,7 @@ public sealed record PostgreSqlStoredSchemaDataSetWithInsertedRows
     public IDbConnection Connection => _dataset.Connection;
 
     public IReadOnlyDictionary<ITable, IStoredTableDataSet> TablesDatasets =>
-        new Dictionary<
+        new OrderedDictionary<
             KeyValuePair<ITable, IStoredTableDataSet>,
             ITable,
             IStoredTableDataSet
