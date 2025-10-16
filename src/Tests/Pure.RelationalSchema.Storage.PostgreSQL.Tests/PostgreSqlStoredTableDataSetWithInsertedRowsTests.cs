@@ -21,33 +21,24 @@ public sealed record PostgreSqlStoredTableDataSetWithInsertedRowsTests
             _fixture.Connection
         );
 
-        IEnumerable<IGrouping<ITable, IRow>> rows = schema.TablesDatasets.Keys.Select(
-            x => new Grouping(
-                x,
-                Enumerable
-                    .Range(0, 100)
-                    .Select(_ => new Row(
-                        new Dictionary<IColumn, IColumn, ICell>(
-                            x.Columns,
-                            x => x,
-                            x => new Cell(new RandomValueForColumnType(x.Type)),
-                            x => new ColumnHash(x)
-                        )
-                    ))
-            )
-        );
+        IEnumerable<IGrouping<ITable, IRow>> rows = schema.Keys.Select(x => new Grouping(
+            x,
+            Enumerable
+                .Range(0, 100)
+                .Select(_ => new Row(
+                    new Dictionary<IColumn, IColumn, ICell>(
+                        x.Columns,
+                        x => x,
+                        x => new Cell(new RandomValueForColumnType(x.Type)),
+                        x => new ColumnHash(x)
+                    )
+                ))
+        ));
 
         IStoredSchemaDataSet dataSetWithInsertedRows =
-            new PostgreSqlStoredSchemaDataSetWithInsertedRows(
-                _fixture!.Schema,
-                schema,
-                rows
-            );
+            new PostgreSqlStoredSchemaDataSetWithInsertedRows(schema, rows);
 
-        Assert.Equal(
-            200,
-            dataSetWithInsertedRows.TablesDatasets.SelectMany(x => x.Value).Count()
-        );
+        Assert.Equal(200, dataSetWithInsertedRows.SelectMany(x => x.Value).Count());
     }
 
     [Fact]
@@ -58,35 +49,26 @@ public sealed record PostgreSqlStoredTableDataSetWithInsertedRowsTests
             _fixture.Connection
         );
 
-        IEnumerable<IGrouping<ITable, IRow>> rows = schema.TablesDatasets.Keys.Select(
-            x => new Grouping(
-                x,
-                Enumerable
-                    .Range(0, 100)
-                    .Select(_ => new Row(
-                        new Dictionary<IColumn, IColumn, ICell>(
-                            x.Columns,
-                            x => x,
-                            x => new Cell(new DefaultValueForColumnType(x.Type)),
-                            x => new ColumnHash(x)
-                        )
-                    ))
-            )
-        );
+        IEnumerable<IGrouping<ITable, IRow>> rows = schema.Keys.Select(x => new Grouping(
+            x,
+            Enumerable
+                .Range(0, 100)
+                .Select(_ => new Row(
+                    new Dictionary<IColumn, IColumn, ICell>(
+                        x.Columns,
+                        x => x,
+                        x => new Cell(new DefaultValueForColumnType(x.Type)),
+                        x => new ColumnHash(x)
+                    )
+                ))
+        ));
 
         IStoredSchemaDataSet dataSetWithInsertedRows =
-            new PostgreSqlStoredSchemaDataSetWithInsertedRows(
-                _fixture!.Schema,
-                schema,
-                rows
-            );
+            new PostgreSqlStoredSchemaDataSetWithInsertedRows(schema, rows);
 
         Assert.Equal(
             1,
-            dataSetWithInsertedRows
-                .TablesDatasets.Select(x => x.Value.Count())
-                .Distinct()
-                .Single()
+            dataSetWithInsertedRows.Select(x => x.Value.Count()).Distinct().Single()
         );
     }
 
