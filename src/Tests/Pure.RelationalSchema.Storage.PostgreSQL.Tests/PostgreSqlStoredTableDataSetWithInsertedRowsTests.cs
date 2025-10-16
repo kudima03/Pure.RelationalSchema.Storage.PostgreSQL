@@ -21,7 +21,7 @@ public sealed record PostgreSqlStoredTableDataSetWithInsertedRowsTests
             _fixture.Connection
         );
 
-        IEnumerable<IGrouping<ITable, IRow>> rows = schema.TablesDatasets.Keys.Select(
+        IEnumerable<IGrouping<ITable, IRow>> rows = schema.Keys.Select(
             x => new Grouping(
                 x,
                 Enumerable
@@ -46,7 +46,7 @@ public sealed record PostgreSqlStoredTableDataSetWithInsertedRowsTests
 
         Assert.Equal(
             200,
-            dataSetWithInsertedRows.TablesDatasets.SelectMany(x => x.Value).Count()
+            dataSetWithInsertedRows.SelectMany(x => x.Value).Count()
         );
     }
 
@@ -58,7 +58,7 @@ public sealed record PostgreSqlStoredTableDataSetWithInsertedRowsTests
             _fixture.Connection
         );
 
-        IEnumerable<IGrouping<ITable, IRow>> rows = schema.TablesDatasets.Keys.Select(
+        IEnumerable<IGrouping<ITable, IRow>> rows = schema.Keys.Select(
             x => new Grouping(
                 x,
                 Enumerable
@@ -84,7 +84,7 @@ public sealed record PostgreSqlStoredTableDataSetWithInsertedRowsTests
         Assert.Equal(
             1,
             dataSetWithInsertedRows
-                .TablesDatasets.Select(x => x.Value.Count())
+                .Select(x => x.Value.Count())
                 .Distinct()
                 .Single()
         );

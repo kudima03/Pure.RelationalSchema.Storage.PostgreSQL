@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Globalization;
 using Pure.Primitives.Abstractions.Char;
 using Pure.Primitives.Abstractions.String;
 using Pure.Primitives.Switches.String;
@@ -49,11 +50,11 @@ internal sealed record DefaultValueForColumnType : IString
                 ),
                 new KeyValuePair<IColumnType, IString>(
                     new DateColumnType(),
-                    new String(DateTime.Today.ToShortDateString())
+                    new String(DateTime.Today.ToString(CultureInfo.InvariantCulture))
                 ),
                 new KeyValuePair<IColumnType, IString>(
                     new DateTimeColumnType(),
-                    new String(DateTime.Today.ToString())
+                    new String(DateTime.Today.ToString(CultureInfo.InvariantCulture))
                 ),
                 new KeyValuePair<IColumnType, IString>(
                     new TimeColumnType(),

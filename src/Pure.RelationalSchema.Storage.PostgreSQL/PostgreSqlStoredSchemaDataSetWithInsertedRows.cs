@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using Pure.Collections.Generic;
 using Pure.Primitives.String.Operations;
 using Pure.RelationalSchema.Abstractions.Schema;
@@ -11,41 +13,80 @@ namespace Pure.RelationalSchema.Storage.PostgreSQL;
 public sealed record PostgreSqlStoredSchemaDataSetWithInsertedRows
     : IPostgreSqlStoredSchemaDataSet
 {
-    private readonly ISchema _schema;
-
-    private readonly IPostgreSqlStoredSchemaDataSet _dataset;
-
-    private readonly IEnumerable<IGrouping<ITable, IRow>> _rows;
+    private readonly IReadOnlyDictionary<ITable, IStoredTableDataSet> _tablesDatasets;
 
     public PostgreSqlStoredSchemaDataSetWithInsertedRows(
         ISchema schema,
         IPostgreSqlStoredSchemaDataSet dataset,
         IEnumerable<IGrouping<ITable, IRow>> rows
     )
+        : this(
+            schema,
+            new OrderedDictionary<
+                KeyValuePair<ITable, IStoredTableDataSet>,
+                ITable,
+                IStoredTableDataSet
+            >(
+                rows.Select(group => new KeyValuePair<ITable, IStoredTableDataSet>(
+                    group.Key,
+                    new PostgreSqlStoredTableDataSetWithInsertedRows(
+                        dataset[group.Key],
+                        dataset.Connection,
+                        new TrimmedHash(new HexString(new SchemaHash(schema))),
+                        group
+                    )
+                )),
+                pair => pair.Key,
+                pair => pair.Value,
+                table => new TableHash(table)
+            ),
+            dataset.Connection
+        )
+    { }
+
+    private PostgreSqlStoredSchemaDataSetWithInsertedRows(
+        ISchema schema,
+        IReadOnlyDictionary<ITable, IStoredTableDataSet> tablesDatasets,
+        IDbConnection connection
+    )
     {
-        _schema = schema;
-        _dataset = dataset;
-        _rows = rows;
+        _tablesDatasets = tablesDatasets;
+        Connection = connection;
+        Schema = schema;
     }
 
-    public IDbConnection Connection => _dataset.Connection;
+    public IDbConnection Connection { get; }
 
-    public IReadOnlyDictionary<ITable, IStoredTableDataSet> TablesDatasets =>
-        new OrderedDictionary<
-            KeyValuePair<ITable, IStoredTableDataSet>,
-            ITable,
-            IStoredTableDataSet
-        >(
-            _rows.Select(x => x.Key).Select(x => new KeyValuePair<ITable, IStoredTableDataSet>(x, _dataset.TablesDatasets[x])),
-            x => x.Key,
-            x => new PostgreSqlStoredTableDataSetWithInsertedRows(
-                x.Value,
-                Connection,
-                new TrimmedHash(new HexString(new SchemaHash(_schema))),
-                _rows.Single(c =>
-                    new TableHash(c.Key).SequenceEqual(new TableHash(x.Key))
-                )
-            ),
-            x => new TableHash(x)
-        );
+    public IStoredTableDataSet this[ITable key] => _tablesDatasets[key];
+
+    public IEnumerable<ITable> Keys => _tablesDatasets.Keys;
+
+    public IEnumerable<IStoredTableDataSet> Values => _tablesDatasets.Values;
+
+    public ISchema Schema { get; }
+
+    public int Count => _tablesDatasets.Count;
+
+    public IEnumerator<KeyValuePair<ITable, IStoredTableDataSet>> GetEnumerator()
+    {
+        return _tablesDatasets.GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
+
+    public bool ContainsKey(ITable key)
+    {
+        return _tablesDatasets.ContainsKey(key);
+    }
+
+    public bool TryGetValue(
+        ITable key,
+        [MaybeNullWhen(false)] out IStoredTableDataSet value
+    )
+    {
+        return _tablesDatasets.TryGetValue(key, out value);
+    }
 }
