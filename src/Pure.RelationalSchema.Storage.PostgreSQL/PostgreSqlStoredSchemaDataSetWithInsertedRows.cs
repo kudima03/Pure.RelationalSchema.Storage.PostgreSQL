@@ -16,12 +16,11 @@ public sealed record PostgreSqlStoredSchemaDataSetWithInsertedRows
     private readonly IReadOnlyDictionary<ITable, IStoredTableDataSet> _tablesDatasets;
 
     public PostgreSqlStoredSchemaDataSetWithInsertedRows(
-        ISchema schema,
         IPostgreSqlStoredSchemaDataSet dataset,
         IEnumerable<IGrouping<ITable, IRow>> rows
     )
         : this(
-            schema,
+            dataset.Schema,
             new OrderedDictionary<
                 KeyValuePair<ITable, IStoredTableDataSet>,
                 ITable,
@@ -32,7 +31,7 @@ public sealed record PostgreSqlStoredSchemaDataSetWithInsertedRows
                     new PostgreSqlStoredTableDataSetWithInsertedRows(
                         dataset[group.Key],
                         dataset.Connection,
-                        new TrimmedHash(new HexString(new SchemaHash(schema))),
+                        new TrimmedHash(new HexString(new SchemaHash(dataset.Schema))),
                         group
                     )
                 )),
