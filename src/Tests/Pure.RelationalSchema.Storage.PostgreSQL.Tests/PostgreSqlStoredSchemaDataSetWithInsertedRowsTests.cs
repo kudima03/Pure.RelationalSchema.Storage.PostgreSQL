@@ -7,7 +7,7 @@ using Pure.RelationalSchema.Storage.PostgreSQL.Tests.Fakes;
 
 namespace Pure.RelationalSchema.Storage.PostgreSQL.Tests;
 
-public sealed record PostgreSqlStoredTableDataSetWithInsertedRowsTests
+public sealed record PostgreSqlStoredSchemaDataSetWithInsertedRowsTests
     : IAsyncLifetime,
         IDisposable
 {
@@ -65,6 +65,42 @@ public sealed record PostgreSqlStoredTableDataSetWithInsertedRowsTests
 
         IStoredSchemaDataSet dataSetWithInsertedRows =
             new PostgreSqlStoredSchemaDataSetWithInsertedRows(schema, rows);
+
+        Assert.Equal(
+            1,
+            dataSetWithInsertedRows.Select(x => x.Value.Count()).Distinct().Single()
+        );
+    }
+
+    [Fact]
+    public void InsertOnlyDistinctRowsOnExisting()
+    {
+        IPostgreSqlStoredSchemaDataSet schema = new PostgreSqlStoredSchemaDataSet(
+            _fixture!.Schema,
+            _fixture.Connection
+        );
+
+        IEnumerable<IGrouping<ITable, IRow>> rows = schema.Keys.Select(x => new Grouping(
+            x,
+            Enumerable
+                .Range(0, 100)
+                .Select(_ => new Row(
+                    new Dictionary<IColumn, IColumn, ICell>(
+                        x.Columns,
+                        x => x,
+                        x => new Cell(new DefaultValueForColumnType(x.Type)),
+                        x => new ColumnHash(x)
+                    )
+                ))
+        ));
+
+        IPostgreSqlStoredSchemaDataSet dataSetWithInsertedRows =
+            new PostgreSqlStoredSchemaDataSetWithInsertedRows(schema, rows);
+
+        dataSetWithInsertedRows = new PostgreSqlStoredSchemaDataSetWithInsertedRows(
+            dataSetWithInsertedRows,
+            rows
+        );
 
         Assert.Equal(
             1,
