@@ -28,11 +28,26 @@ internal sealed record PostgreSqlStoredTableDataSetWithInsertedRows : IStoredTab
         _dataSet = dataSet;
         _rowsInserted = new Lazy<IBool>(() =>
         {
+            IEnumerable<IRow> rowsToInsert = rows.DistinctBy(x =>
+                    ((IString)new HexString(new RowHash(x))).TextValue
+                )
+                .ExceptBy(
+                    dataSet.Select(c =>
+                        ((IString)new HexString(new RowHash(c))).TextValue
+                    ),
+                    x => ((IString)new HexString(new RowHash(x))).TextValue
+                );
+
+            if (!rowsToInsert.Any())
+            {
+                return new True();
+            }
+
             IDbCommand command = connection.CreateCommand();
             command.CommandText = new InsertStatement(
                 new TrimmedHash(new HexString(new TableHash(dataSet.TableSchema))),
                 schemaName,
-                rows.DistinctBy(x => ((IString)new HexString(new RowHash(x))).TextValue)
+                rowsToInsert
             ).TextValue;
             _ = command.ExecuteNonQuery();
             return new True();

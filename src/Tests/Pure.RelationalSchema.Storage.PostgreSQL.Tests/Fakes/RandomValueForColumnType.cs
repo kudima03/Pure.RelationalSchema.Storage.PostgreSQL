@@ -1,8 +1,9 @@
 using System.Collections;
+using System.Globalization;
 using Pure.Primitives.Abstractions.Char;
 using Pure.Primitives.Abstractions.String;
 using Pure.Primitives.Number;
-using Pure.Primitives.Random.Date;
+using Pure.Primitives.Random.Bool;
 using Pure.Primitives.Random.Number;
 using Pure.Primitives.Random.String;
 using Pure.Primitives.Switches.String;
@@ -27,6 +28,10 @@ internal sealed record RandomValueForColumnType : IString
         new StringSwitch<IColumnType>(
             _columnType,
             [
+                new KeyValuePair<IColumnType, IString>(
+                    new BoolColumnType(),
+                    new String(new RandomBool())
+                ),
                 new KeyValuePair<IColumnType, IString>(
                     new IntColumnType(),
                     new String(new RandomInt())
@@ -57,15 +62,15 @@ internal sealed record RandomValueForColumnType : IString
                 ),
                 new KeyValuePair<IColumnType, IString>(
                     new DateColumnType(),
-                    new String(new RandomDate())
+                    new String(DateTime.Now.ToString(CultureInfo.InvariantCulture))
                 ),
                 new KeyValuePair<IColumnType, IString>(
                     new DateTimeColumnType(),
-                    new String(DateTime.Now.ToString())
+                    new String(DateTime.Now.ToString(CultureInfo.InvariantCulture))
                 ),
                 new KeyValuePair<IColumnType, IString>(
                     new TimeColumnType(),
-                    new String(DateTime.Now.ToShortTimeString())
+                    new String(TimeOnly.FromDateTime(DateTime.Now).ToShortTimeString())
                 ),
             ],
             x => new ColumnTypeHash(x)

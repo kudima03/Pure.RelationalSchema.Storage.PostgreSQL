@@ -2,6 +2,7 @@ using System.Collections;
 using System.Globalization;
 using Pure.Primitives.Abstractions.Char;
 using Pure.Primitives.Abstractions.String;
+using Pure.Primitives.Bool;
 using Pure.Primitives.Switches.String;
 using Pure.RelationalSchema.Abstractions.ColumnType;
 using Pure.RelationalSchema.ColumnType;
@@ -24,6 +25,10 @@ internal sealed record DefaultValueForColumnType : IString
         new StringSwitch<IColumnType>(
             _columnType,
             [
+                new KeyValuePair<IColumnType, IString>(
+                    new BoolColumnType(),
+                    new String(new True())
+                ),
                 new KeyValuePair<IColumnType, IString>(
                     new IntColumnType(),
                     new String(int.MaxValue.ToString())
@@ -50,15 +55,15 @@ internal sealed record DefaultValueForColumnType : IString
                 ),
                 new KeyValuePair<IColumnType, IString>(
                     new DateColumnType(),
-                    new String(DateTime.Today.ToString(CultureInfo.InvariantCulture))
+                    new String(DateTime.MaxValue.ToString(CultureInfo.InvariantCulture))
                 ),
                 new KeyValuePair<IColumnType, IString>(
                     new DateTimeColumnType(),
-                    new String(DateTime.Today.ToString(CultureInfo.InvariantCulture))
+                    new String(DateTime.MaxValue.ToString(CultureInfo.InvariantCulture))
                 ),
                 new KeyValuePair<IColumnType, IString>(
                     new TimeColumnType(),
-                    new String(new TimeOnly(23, 59, 59).ToString())
+                    new String(TimeOnly.MaxValue.ToString())
                 ),
             ],
             x => new ColumnTypeHash(x)
