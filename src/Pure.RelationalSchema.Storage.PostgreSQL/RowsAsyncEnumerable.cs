@@ -1,5 +1,6 @@
 using System.Data;
 using System.Data.Common;
+using System.Globalization;
 using Pure.Collections.Generic;
 using Pure.Primitives.Abstractions.String;
 using Pure.Primitives.String.Operations;
@@ -42,7 +43,7 @@ internal sealed record RowsAsyncEnumerable : IAsyncEnumerable<IRow>
                 .Columns.Select(x =>
                     new TrimmedHash(new HexString(new ColumnHash(x))).TextValue
                 )
-                .ToDictionary(x => x, x => reader[x].ToString())!;
+                .ToDictionary(x => x, x => Convert.ToString(reader[x], CultureInfo.InvariantCulture))!;
 
             IReadOnlyDictionary<IColumn, ICell> cells = new Dictionary<
                 IColumn,
@@ -56,7 +57,6 @@ internal sealed record RowsAsyncEnumerable : IAsyncEnumerable<IRow>
                         rawCells[
                             new TrimmedHash(new HexString(new ColumnHash(x))).TextValue
                         ]
-                            .ToString()
                     )
                 ),
                 x => new ColumnHash(x)
