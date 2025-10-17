@@ -39,7 +39,10 @@ internal sealed record RowsEnumerable : IEnumerable<IRow>
                 .Columns.Select(x =>
                     new TrimmedHash(new HexString(new ColumnHash(x))).TextValue
                 )
-                .ToDictionary(x => x, x => Convert.ToString(reader[x], CultureInfo.InvariantCulture))!;
+                .ToDictionary(
+                    x => x,
+                    x => Convert.ToString(reader[x], CultureInfo.InvariantCulture)
+                )!;
 
             IReadOnlyDictionary<IColumn, ICell> cells = new Dictionary<
                 IColumn,
