@@ -35,30 +35,32 @@ public sealed record DatabaseFixture : IDisposable
         _postgres.StartAsync().GetAwaiter().GetResult();
 
         Connection = new NpgsqlConnection(_postgres.GetConnectionString());
+
         Connection.Open();
 
         IReadOnlyCollection<IColumn> columns1 =
         [
-            new Column(new String("Column1"), new LongColumnType()),
-            new Column(new String("Column2"), new LongColumnType()),
-            new Column(new String("Column3"), new StringColumnType()),
-            new Column(new String("Column4"), new ULongColumnType()),
+            new Column(new String("Column1"), new BoolColumnType()),
+            //new Column(new String("Column2"), new DateColumnType()),
+            new Column(new String("Column3"), new DateTimeColumnType()),
+            new Column(new String("Column4"), new IntColumnType()),
+            new Column(new String("Column5"), new LongColumnType()),
         ];
 
         IReadOnlyCollection<IColumn> columns2 =
         [
-            new Column(new String("Column5"), new LongColumnType()),
-            new Column(new String("Column6"), new LongColumnType()),
-            new Column(new String("Column7"), new StringColumnType()),
-            new Column(new String("Column8"), new IntColumnType()),
+            new Column(new String("Column6"), new StringColumnType()),
+            //new Column(new String("Column7"), new TimeColumnType()),
+            new Column(new String("Column8"), new UIntColumnType()),
+            new Column(new String("Column9"), new ULongColumnType()),
+            new Column(new String("Column10"), new UShortColumnType()),
         ];
 
         ITable table1 = new Table(
             new String("Test"),
             columns1,
             [
-                new Index(new True(), columns1.Take(1)),
-                new Index(new True(), columns1.Skip(1).Take(1)),
+                new Index(new False(), columns1.Skip(1).Take(1)),
                 new Index(new False(), columns1.Skip(2).Take(2)),
             ]
         );
