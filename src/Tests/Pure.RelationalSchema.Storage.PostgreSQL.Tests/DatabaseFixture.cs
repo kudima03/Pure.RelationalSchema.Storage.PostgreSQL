@@ -54,6 +54,7 @@ public sealed record DatabaseFixture : IDisposable
             new Column(new String("Column8"), new UIntColumnType()),
             new Column(new String("Column9"), new ULongColumnType()),
             new Column(new String("Column10"), new UShortColumnType()),
+            new Column(new String("Column11"), new DeterminedHashColumnType()),
         ];
 
         ITable table1 = new Table(
