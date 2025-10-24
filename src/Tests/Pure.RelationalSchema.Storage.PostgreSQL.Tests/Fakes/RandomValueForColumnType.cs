@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Globalization;
+using Pure.HashCodes;
 using Pure.Primitives.Abstractions.Char;
 using Pure.Primitives.Abstractions.String;
 using Pure.Primitives.Number;
 using Pure.Primitives.Random.Bool;
 using Pure.Primitives.Random.Number;
 using Pure.Primitives.Random.String;
+using Pure.Primitives.String.Operations;
 using Pure.Primitives.Switches.String;
 using Pure.RelationalSchema.Abstractions.ColumnType;
 using Pure.RelationalSchema.ColumnType;
@@ -71,6 +73,10 @@ internal sealed record RandomValueForColumnType : IString
                 new KeyValuePair<IColumnType, IString>(
                     new TimeColumnType(),
                     new String(TimeOnly.FromDateTime(DateTime.Now).ToShortTimeString())
+                ),
+                new KeyValuePair<IColumnType, IString>(
+                    new DeterminedHashColumnType(),
+                    new HexString(new DeterminedHash(new RandomString()))
                 ),
             ],
             x => new ColumnTypeHash(x)
