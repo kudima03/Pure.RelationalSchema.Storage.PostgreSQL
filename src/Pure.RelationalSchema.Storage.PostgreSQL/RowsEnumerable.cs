@@ -34,6 +34,8 @@ internal sealed record RowsEnumerable : IEnumerable<IRow>
         cmd.CommandText = new SelectAllStatement(_table, _schemaName).TextValue;
         using IDataReader reader = cmd.ExecuteReader();
 
+        ICollection<IRow> rows = [];
+
         while (reader.Read())
         {
             IReadOnlyDictionary<string, string> rawCells = _table
@@ -66,8 +68,10 @@ internal sealed record RowsEnumerable : IEnumerable<IRow>
                 x => new ColumnHash(x)
             );
 
-            yield return new Row(cells);
+            rows.Add(new Row(cells));
         }
+
+        return rows.GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
