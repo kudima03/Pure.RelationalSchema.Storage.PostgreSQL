@@ -19,8 +19,8 @@ internal sealed record ColumnCreationStatement : IString
     }
 
     public string TextValue =>
-        (
-            (IString)
+
+
                 new ConcatenatedString(
                     new WrappedString(
                         new DoubleQuoteString(),
@@ -31,7 +31,7 @@ internal sealed record ColumnCreationStatement : IString
                     new WhitespaceString(),
                     new NotNullStatement()
                 )
-        ).TextValue;
+        .TextValue;
 
     public IEnumerator<IChar> GetEnumerator()
     {

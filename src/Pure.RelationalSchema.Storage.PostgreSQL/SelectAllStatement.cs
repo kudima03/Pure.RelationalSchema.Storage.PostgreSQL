@@ -27,8 +27,8 @@ internal sealed record SelectAllStatement : IString
     }
 
     public string TextValue =>
-        (
-            (IString)
+
+
                 new WhitespaceJoinedString(
                     new String("SELECT"),
                     new JoinedString(
@@ -63,7 +63,7 @@ internal sealed record SelectAllStatement : IString
                         new SemicolonString()
                     )
                 )
-        ).TextValue;
+        .TextValue;
 
     public IEnumerator<IChar> GetEnumerator()
     {

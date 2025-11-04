@@ -22,8 +22,8 @@ internal sealed record TableCreationStatement : IString
     }
 
     public string TextValue =>
-        (
-            (IString)
+
+
                 new NewLineJoinedString(
                     new TableCreationHeaderStatement(
                         _schemaName,
@@ -47,7 +47,7 @@ internal sealed record TableCreationStatement : IString
                         )
                     )
                 )
-        ).TextValue;
+        .TextValue;
 
     public IEnumerator<IChar> GetEnumerator()
     {

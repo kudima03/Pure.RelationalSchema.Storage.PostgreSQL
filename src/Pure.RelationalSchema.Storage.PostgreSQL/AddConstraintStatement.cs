@@ -18,13 +18,13 @@ internal sealed record AddConstraintStatement : IString
     }
 
     public string TextValue =>
-        (
-            (IString)
+
+
                 new WhitespaceJoinedString(
                     new String("ADD CONSTRAINT"),
                     new WrappedString(new DoubleQuoteString(), _constraintName)
                 )
-        ).TextValue;
+        .TextValue;
 
     public IEnumerator<IChar> GetEnumerator()
     {

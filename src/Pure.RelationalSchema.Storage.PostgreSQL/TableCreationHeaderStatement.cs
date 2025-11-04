@@ -21,8 +21,8 @@ internal sealed record TableCreationHeaderStatement : IString
     }
 
     public string TextValue =>
-        (
-            (IString)
+
+
                 new WhitespaceJoinedString(
                     new String("CREATE TABLE IF NOT EXISTS"),
                     new JoinedString(
@@ -33,7 +33,7 @@ internal sealed record TableCreationHeaderStatement : IString
                         ]
                     )
                 )
-        ).TextValue;
+        .TextValue;
 
     public IEnumerator<IChar> GetEnumerator()
     {

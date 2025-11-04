@@ -20,8 +20,8 @@ internal sealed record SchemaCreationStatement : IString
     }
 
     public string TextValue =>
-        (
-            (IString)
+
+
                 new JoinedString(
                     new ConcatenatedString(new NewLineString(), new NewLineString()),
                     [
@@ -78,7 +78,7 @@ internal sealed record SchemaCreationStatement : IString
                         ),
                     ]
                 )
-        ).TextValue;
+        .TextValue;
 
     public IEnumerator<IChar> GetEnumerator()
     {
