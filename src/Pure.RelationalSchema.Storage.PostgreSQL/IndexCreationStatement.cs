@@ -28,8 +28,8 @@ internal sealed record IndexCreationStatement : IString
     }
 
     public string TextValue =>
-        (
-            (IString)
+
+
                 new WhitespaceJoinedString(
                     new String("CREATE"),
                     new StringChoice(
@@ -68,7 +68,7 @@ internal sealed record IndexCreationStatement : IString
                         )
                     )
                 )
-        ).TextValue;
+        .TextValue;
 
     public IEnumerator<IChar> GetEnumerator()
     {

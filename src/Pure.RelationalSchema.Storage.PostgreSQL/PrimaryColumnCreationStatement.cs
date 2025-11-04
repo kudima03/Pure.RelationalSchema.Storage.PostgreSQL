@@ -15,8 +15,8 @@ internal sealed record PrimaryColumnCreationStatement : IString
     private readonly IColumn _primaryColumn = new RowDeterminedHashColumn();
 
     public string TextValue =>
-        (
-            (IString)
+
+
                 new WhitespaceJoinedString(
                     new WrappedString(
                         new DoubleQuoteString(),
@@ -25,7 +25,7 @@ internal sealed record PrimaryColumnCreationStatement : IString
                     new PostgreSqlColumnTypeName(_primaryColumn.Type),
                     new PrimaryKeyStatement()
                 )
-        ).TextValue;
+        .TextValue;
 
     public IEnumerator<IChar> GetEnumerator()
     {

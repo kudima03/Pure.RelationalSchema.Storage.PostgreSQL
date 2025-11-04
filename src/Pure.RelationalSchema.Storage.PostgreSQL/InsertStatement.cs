@@ -38,8 +38,8 @@ internal sealed record InsertStatement : IString
     }
 
     public string TextValue =>
-        (
-            (IString)
+
+
                 new WhitespaceJoinedString(
                     new String("INSERT INTO"),
                     new JoinedString(
@@ -70,7 +70,7 @@ internal sealed record InsertStatement : IString
                                         new ColumnHash(new RowDeterminedHashColumn())
                                     )
                                 )
-                                .DistinctBy(x => ((IString)x).TextValue)
+                                .DistinctBy(x => x.TextValue)
                                 .Select(x => new WrappedString(
                                     new DoubleQuoteString(),
                                     new TrimmedHash(x)
@@ -105,7 +105,7 @@ internal sealed record InsertStatement : IString
                         new SemicolonString()
                     )
                 )
-        ).TextValue;
+        .TextValue;
 
     public IEnumerator<IChar> GetEnumerator()
     {

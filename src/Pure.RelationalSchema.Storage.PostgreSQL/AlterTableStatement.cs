@@ -26,8 +26,8 @@ internal sealed record AlterTableStatement : IString
     }
 
     public string TextValue =>
-        (
-            (IString)
+
+
                 new WhitespaceJoinedString(
                     new String("ALTER TABLE"),
                     new JoinedString(
@@ -38,7 +38,7 @@ internal sealed record AlterTableStatement : IString
                         ]
                     )
                 )
-        ).TextValue;
+        .TextValue;
 
     public IEnumerator<IChar> GetEnumerator()
     {

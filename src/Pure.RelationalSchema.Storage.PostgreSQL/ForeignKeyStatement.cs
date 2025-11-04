@@ -23,8 +23,8 @@ internal sealed record ForeignKeyStatement : IString
     }
 
     public string TextValue =>
-        (
-            (IString)
+
+
                 new WhitespaceJoinedString(
                     new String("FOREIGN KEY"),
                     new WrappedString(
@@ -76,7 +76,7 @@ internal sealed record ForeignKeyStatement : IString
                         new SemicolonString()
                     )
                 )
-        ).TextValue;
+        .TextValue;
 
     public IEnumerator<IChar> GetEnumerator()
     {

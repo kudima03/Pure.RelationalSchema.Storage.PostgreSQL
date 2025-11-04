@@ -29,13 +29,13 @@ internal sealed record PostgreSqlStoredTableDataSetWithInsertedRows : IStoredTab
         _rowsInserted = new Lazy<IBool>(() =>
         {
             IEnumerable<IRow> rowsToInsert = rows.DistinctBy(x =>
-                    ((IString)new HexString(new RowHash(x))).TextValue
+                    new HexString(new RowHash(x)).TextValue
                 )
                 .ExceptBy(
                     dataSet.Select(c =>
-                        ((IString)new HexString(new RowHash(c))).TextValue
+                        new HexString(new RowHash(c)).TextValue
                     ),
-                    x => ((IString)new HexString(new RowHash(x))).TextValue
+                    x => new HexString(new RowHash(x)).TextValue
                 );
 
             if (!rowsToInsert.Any())

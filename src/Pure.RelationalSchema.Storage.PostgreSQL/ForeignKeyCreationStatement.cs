@@ -23,8 +23,8 @@ internal sealed record ForeignKeyCreationStatement : IString
     }
 
     public string TextValue =>
-        (
-            (IString)
+
+
                 new NewLineJoinedString(
                     new String("DO $$"),
                     new String("BEGIN"),
@@ -82,7 +82,7 @@ internal sealed record ForeignKeyCreationStatement : IString
                     new ConcatenatedString(new String("END IF"), new SemicolonString()),
                     new ConcatenatedString(new String("END$$"), new SemicolonString())
                 )
-        ).TextValue;
+        .TextValue;
 
     public IEnumerator<IChar> GetEnumerator()
     {

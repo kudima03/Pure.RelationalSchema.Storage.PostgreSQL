@@ -19,9 +19,9 @@ internal sealed record TrimmedHash : IString
     }
 
     public string TextValue =>
-        (
-            (IString)new Substring(_sourceHash, new MinUshort(), new UShort(HashLength))
-        ).TextValue;
+
+            new Substring(_sourceHash, new MinUshort(), new UShort(HashLength))
+        .TextValue;
 
     public IEnumerator<IChar> GetEnumerator()
     {
