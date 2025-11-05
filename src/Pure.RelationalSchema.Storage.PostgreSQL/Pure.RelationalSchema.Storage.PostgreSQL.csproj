@@ -17,7 +17,7 @@
     <PackageReference Include="Pure.Primitives" Version="3.4.0" />
     <PackageReference Include="Pure.Primitives.Abstractions" Version="4.1.0" />
     <PackageReference Include="Pure.Primitives.Choices" Version="1.1.0" />
-    <PackageReference Include="Pure.Primitives.String.Operations" Version="1.1.0" />
+    <PackageReference Include="Pure.Primitives.String.Operations" Version="1.2.0" />
     <PackageReference Include="Pure.Primitives.Switches" Version="1.0.0" />
     <PackageReference Include="Pure.RelationalSchema" Version="1.1.0" />
     <PackageReference Include="Pure.RelationalSchema.HashCodes" Version="3.0.0" />
