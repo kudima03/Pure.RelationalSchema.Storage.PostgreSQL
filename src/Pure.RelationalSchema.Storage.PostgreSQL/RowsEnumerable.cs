@@ -30,15 +30,17 @@ internal sealed record RowsEnumerable : IEnumerable<IRow>
 
     public IEnumerator<IRow> GetEnumerator()
     {
-        using IDbCommand cmd = _connection.CreateCommand();
-        cmd.CommandText = new SelectAllStatement(_table, _schemaName).TextValue;
-        using IDataReader reader = cmd.ExecuteReader();
-
         IEnumerable<IColumn> columns = [.. _table.Columns];
 
         IEnumerable<string> columnNames = [.. _table.Columns.Select(x =>
             new TrimmedHash(new HexString(new ColumnHash(x))).TextValue
         )];
+
+        using IDbCommand cmd = _connection.CreateCommand();
+
+        cmd.CommandText = new SelectAllStatement(_table, _schemaName).TextValue;
+
+        using IDataReader reader = cmd.ExecuteReader();
 
         ICollection<IRow> rows = [];
 
