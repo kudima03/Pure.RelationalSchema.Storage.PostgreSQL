@@ -34,29 +34,31 @@ internal sealed record RowsEnumerable : IEnumerable<IRow>
         cmd.CommandText = new SelectAllStatement(_table, _schemaName).TextValue;
         using IDataReader reader = cmd.ExecuteReader();
 
+        IEnumerable<IColumn> columns = [.. _table.Columns];
+
+        IEnumerable<string> columnNames = [.. _table.Columns.Select(x =>
+            new TrimmedHash(new HexString(new ColumnHash(x))).TextValue
+        )];
+
         ICollection<IRow> rows = [];
 
         while (reader.Read())
         {
-            IReadOnlyDictionary<string, string> rawCells = _table
-                .Columns.Select(x =>
-                    new TrimmedHash(new HexString(new ColumnHash(x))).TextValue
-                )
-                .ToDictionary(
-                    x => x,
-                    x =>
-                        Convert.ToString(reader[x], CultureInfo.InvariantCulture)
-                        == Array.Empty<byte>().ToString()
-                            ? Encoding.UTF8.GetString(reader[x] as byte[] ?? [])
-                            : Convert.ToString(reader[x], CultureInfo.InvariantCulture)
-                )!;
+            IReadOnlyDictionary<string, string> rawCells = columnNames.ToDictionary(
+                x => x,
+                x =>
+                    Convert.ToString(reader[x], CultureInfo.InvariantCulture)
+                    == Array.Empty<byte>().ToString()
+                        ? Encoding.UTF8.GetString(reader[x] as byte[] ?? [])
+                        : Convert.ToString(reader[x], CultureInfo.InvariantCulture)
+            )!;
 
             IReadOnlyDictionary<IColumn, ICell> cells = new Dictionary<
                 IColumn,
                 IColumn,
                 ICell
             >(
-                _table.Columns,
+                columns,
                 x => x,
                 x => new Cell(
                     new String(
