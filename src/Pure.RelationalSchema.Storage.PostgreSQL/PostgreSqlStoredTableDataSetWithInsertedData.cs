@@ -32,7 +32,7 @@ internal sealed record PostgreSqlStoredTableDataSetWithInsertedRows : IStoredTab
                     new HexString(new RowHash(x)).TextValue
                 )
                 .ExceptBy(
-                    dataSet.Select(c =>
+                    dataSet.AsQueryable().Select(c =>
                         new HexString(new RowHash(c)).TextValue
                     ),
                     x => new HexString(new RowHash(x)).TextValue

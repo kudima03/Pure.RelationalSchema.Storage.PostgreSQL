@@ -5,10 +5,8 @@ using Pure.Primitives.String;
 using Pure.Primitives.String.Operations;
 using Pure.RelationalSchema.Abstractions.Schema;
 using Pure.RelationalSchema.Abstractions.Table;
-using Pure.RelationalSchema.Column;
 using Pure.RelationalSchema.HashCodes;
 using Pure.RelationalSchema.Storage.Abstractions;
-using Pure.RelationalSchema.Storage.HashCodes;
 using Char = Pure.Primitives.Char.Char;
 using String = Pure.Primitives.String.String;
 
@@ -65,11 +63,6 @@ internal sealed record InsertStatement : IString
                             _rows
                                 .SelectMany(x => x.Cells.Keys)
                                 .Select(x => new HexString(new ColumnHash(x)))
-                                .Append(
-                                    new HexString(
-                                        new ColumnHash(new RowDeterminedHashColumn())
-                                    )
-                                )
                                 .DistinctBy(x => x.TextValue)
                                 .Select(x => new WrappedString(
                                     new DoubleQuoteString(),
@@ -93,7 +86,6 @@ internal sealed record InsertStatement : IString
                                         new WhitespaceString()
                                     ),
                                     x.Cells.Values.Select(c => c.Value)
-                                        .Append(new HexString(new RowHash(x)))
                                         .Select(c => new WrappedString(
                                             new SingleQuoteString(),
                                             c
