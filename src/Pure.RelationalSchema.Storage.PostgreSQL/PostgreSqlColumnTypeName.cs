@@ -67,6 +67,18 @@ internal sealed record PostgreSqlColumnTypeName : IString
                     new DeterminedHashColumnType(),
                     new String("bytea")
                 ),
+                new KeyValuePair<IColumnType, IString>(
+                    new DoubleColumnType(),
+                    new String("double precision")
+                ),
+                new KeyValuePair<IColumnType, IString>(
+                    new FloatColumnType(),
+                    new String("real")
+                ),
+                new KeyValuePair<IColumnType, IString>(
+                    new UuidColumnType(),
+                    new String("uuid")
+                ),
             ],
             x => new ColumnTypeHash(x)
         ).TextValue;
