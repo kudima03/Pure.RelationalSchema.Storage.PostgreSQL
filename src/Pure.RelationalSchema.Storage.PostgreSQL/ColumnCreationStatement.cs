@@ -19,19 +19,16 @@ internal sealed record ColumnCreationStatement : IString
     }
 
     public string TextValue =>
-
-
-                new ConcatenatedString(
-                    new WrappedString(
-                        new DoubleQuoteString(),
-                        new TrimmedHash(new HexString(new ColumnHash(_column)))
-                    ),
-                    new WhitespaceString(),
-                    new PostgreSqlColumnTypeName(_column.Type),
-                    new WhitespaceString(),
-                    new NotNullStatement()
-                )
-        .TextValue;
+        new ConcatenatedString(
+            new WrappedString(
+                new DoubleQuoteString(),
+                new TrimmedHash(new HexString(new ColumnHash(_column)))
+            ),
+            new WhitespaceString(),
+            new PostgreSqlColumnTypeName(_column.Type),
+            new WhitespaceString(),
+            new NotNullStatement()
+        ).TextValue;
 
     public IEnumerator<IChar> GetEnumerator()
     {

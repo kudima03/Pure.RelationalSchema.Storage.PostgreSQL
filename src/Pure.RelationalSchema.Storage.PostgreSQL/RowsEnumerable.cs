@@ -32,9 +32,12 @@ internal sealed record RowsEnumerable : IEnumerable<IRow>
     {
         IEnumerable<IColumn> columns = [.. _table.Columns];
 
-        IEnumerable<string> columnNames = [.. _table.Columns.Select(x =>
-            new TrimmedHash(new HexString(new ColumnHash(x))).TextValue
-        )];
+        IEnumerable<string> columnNames =
+        [
+            .. _table.Columns.Select(x =>
+                new TrimmedHash(new HexString(new ColumnHash(x))).TextValue
+            ),
+        ];
 
         using IDbCommand cmd = _connection.CreateCommand();
 

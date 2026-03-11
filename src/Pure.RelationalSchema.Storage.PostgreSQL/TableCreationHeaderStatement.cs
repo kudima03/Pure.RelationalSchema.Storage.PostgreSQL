@@ -21,19 +21,16 @@ internal sealed record TableCreationHeaderStatement : IString
     }
 
     public string TextValue =>
-
-
-                new WhitespaceJoinedString(
-                    new String("CREATE TABLE IF NOT EXISTS"),
-                    new JoinedString(
-                        new DotString(),
-                        [
-                            new WrappedString(new DoubleQuoteString(), _schemaName),
-                            new WrappedString(new DoubleQuoteString(), _tableName),
-                        ]
-                    )
-                )
-        .TextValue;
+        new WhitespaceJoinedString(
+            new String("CREATE TABLE IF NOT EXISTS"),
+            new JoinedString(
+                new DotString(),
+                [
+                    new WrappedString(new DoubleQuoteString(), _schemaName),
+                    new WrappedString(new DoubleQuoteString(), _tableName),
+                ]
+            )
+        ).TextValue;
 
     public IEnumerator<IChar> GetEnumerator()
     {

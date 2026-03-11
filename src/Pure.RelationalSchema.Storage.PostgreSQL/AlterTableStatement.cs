@@ -26,19 +26,16 @@ internal sealed record AlterTableStatement : IString
     }
 
     public string TextValue =>
-
-
-                new WhitespaceJoinedString(
-                    new String("ALTER TABLE"),
-                    new JoinedString(
-                        new DotString(),
-                        [
-                            new WrappedString(new DoubleQuoteString(), _schemaName),
-                            new WrappedString(new DoubleQuoteString(), _tableName),
-                        ]
-                    )
-                )
-        .TextValue;
+        new WhitespaceJoinedString(
+            new String("ALTER TABLE"),
+            new JoinedString(
+                new DotString(),
+                [
+                    new WrappedString(new DoubleQuoteString(), _schemaName),
+                    new WrappedString(new DoubleQuoteString(), _tableName),
+                ]
+            )
+        ).TextValue;
 
     public IEnumerator<IChar> GetEnumerator()
     {

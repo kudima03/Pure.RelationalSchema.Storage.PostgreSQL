@@ -20,65 +20,45 @@ internal sealed record SchemaCreationStatement : IString
     }
 
     public string TextValue =>
-
-
+        new JoinedString(
+            new ConcatenatedString(new NewLineString(), new NewLineString()),
+            [
+                new ConcatenatedString(
+                    new WhitespaceJoinedString(
+                        new String("CREATE SCHEMA IF NOT EXISTS"),
+                        new WrappedString(
+                            new DoubleQuoteString(),
+                            new TrimmedHash(new HexString(new SchemaHash(_schema)))
+                        )
+                    ),
+                    new SemicolonString()
+                ),
                 new JoinedString(
                     new ConcatenatedString(new NewLineString(), new NewLineString()),
-                    [
-                        new ConcatenatedString(
-                            new WhitespaceJoinedString(
-                                new String("CREATE SCHEMA IF NOT EXISTS"),
-                                new WrappedString(
-                                    new DoubleQuoteString(),
-                                    new TrimmedHash(
-                                        new HexString(new SchemaHash(_schema))
-                                    )
-                                )
-                            ),
-                            new SemicolonString()
-                        ),
-                        new JoinedString(
-                            new ConcatenatedString(
-                                new NewLineString(),
-                                new NewLineString()
-                            ),
-                            _schema.Tables.Select(x => new TableCreationStatement(
-                                new TrimmedHash(new HexString(new SchemaHash(_schema))),
-                                x
-                            ))
-                        ),
-                        new JoinedString(
-                            new ConcatenatedString(
-                                new NewLineString(),
-                                new NewLineString()
-                            ),
-                            _schema.Tables.SelectMany(x =>
-                                x.Indexes.Select(c => new IndexCreationStatement(
-                                    c,
-                                    x,
-                                    new TrimmedHash(
-                                        new HexString(new SchemaHash(_schema))
-                                    )
-                                ))
-                            )
-                        ),
-                        new JoinedString(
-                            new ConcatenatedString(
-                                new NewLineString(),
-                                new NewLineString()
-                            ),
-                            _schema.ForeignKeys.Select(
-                                x => new ForeignKeyCreationStatement(
-                                    x,
-                                    new TrimmedHash(
-                                        new HexString(new SchemaHash(_schema))
-                                    )
-                                )
-                            )
-                        ),
-                    ]
-                )
-        .TextValue;
+                    _schema.Tables.Select(x => new TableCreationStatement(
+                        new TrimmedHash(new HexString(new SchemaHash(_schema))),
+                        x
+                    ))
+                ),
+                new JoinedString(
+                    new ConcatenatedString(new NewLineString(), new NewLineString()),
+                    _schema.Tables.SelectMany(x =>
+                        x.Indexes.Select(c => new IndexCreationStatement(
+                            c,
+                            x,
+                            new TrimmedHash(new HexString(new SchemaHash(_schema)))
+                        ))
+                    )
+                ),
+                new JoinedString(
+                    new ConcatenatedString(new NewLineString(), new NewLineString()),
+                    _schema.ForeignKeys.Select(x => new ForeignKeyCreationStatement(
+                        x,
+                        new TrimmedHash(new HexString(new SchemaHash(_schema)))
+                    ))
+                ),
+            ]
+        ).TextValue;
 
     public IEnumerator<IChar> GetEnumerator()
     {

@@ -27,43 +27,37 @@ internal sealed record SelectAllStatement : IString
     }
 
     public string TextValue =>
-
-
-                new WhitespaceJoinedString(
-                    new String("SELECT"),
-                    new JoinedString(
-                        new ConcatenatedString(new CommaString(), new WhitespaceString()),
-                        _table.Columns.Select(x => new WrappedString(
-                            new DoubleQuoteString(),
-                            new HexString(new ColumnHash(x))
-                        ))
+        new WhitespaceJoinedString(
+            new String("SELECT"),
+            new JoinedString(
+                new ConcatenatedString(new CommaString(), new WhitespaceString()),
+                _table.Columns.Select(x => new WrappedString(
+                    new DoubleQuoteString(),
+                    new HexString(new ColumnHash(x))
+                ))
+            ),
+            new String("FROM"),
+            new ConcatenatedString(
+                new StringChoice(
+                    new EqualCondition(_schemaName, new EmptyString()),
+                    new WrappedString(
+                        new DoubleQuoteString(),
+                        new HexString(new TableHash(_table))
                     ),
-                    new String("FROM"),
-                    new ConcatenatedString(
-                        new StringChoice(
-                            new EqualCondition(_schemaName, new EmptyString()),
+                    new JoinedString(
+                        new DotString(),
+                        [
+                            new WrappedString(new DoubleQuoteString(), _schemaName),
                             new WrappedString(
                                 new DoubleQuoteString(),
                                 new HexString(new TableHash(_table))
                             ),
-                            new JoinedString(
-                                new DotString(),
-                                [
-                                    new WrappedString(
-                                        new DoubleQuoteString(),
-                                        _schemaName
-                                    ),
-                                    new WrappedString(
-                                        new DoubleQuoteString(),
-                                        new HexString(new TableHash(_table))
-                                    ),
-                                ]
-                            )
-                        ),
-                        new SemicolonString()
+                        ]
                     )
-                )
-        .TextValue;
+                ),
+                new SemicolonString()
+            )
+        ).TextValue;
 
     public IEnumerator<IChar> GetEnumerator()
     {
