@@ -36,68 +36,59 @@ internal sealed record InsertStatement : IString
     }
 
     public string TextValue =>
-
-
-                new WhitespaceJoinedString(
-                    new String("INSERT INTO"),
-                    new JoinedString(
-                        new DotString(),
-                        [
-                            new WrappedString(
-                                new DoubleQuoteString(),
-                                new TrimmedHash(_schemaName)
-                            ),
-                            new WrappedString(
-                                new DoubleQuoteString(),
-                                new TrimmedHash(_tableName)
-                            ),
-                        ]
+        new WhitespaceJoinedString(
+            new String("INSERT INTO"),
+            new JoinedString(
+                new DotString(),
+                [
+                    new WrappedString(
+                        new DoubleQuoteString(),
+                        new TrimmedHash(_schemaName)
                     ),
                     new WrappedString(
+                        new DoubleQuoteString(),
+                        new TrimmedHash(_tableName)
+                    ),
+                ]
+            ),
+            new WrappedString(
+                new LeftRoundBracketString(),
+                new JoinedString(
+                    new ConcatenatedString(new CommaString(), new WhitespaceString()),
+                    _rows
+                        .SelectMany(x => x.Cells.Keys)
+                        .Select(x => new HexString(new ColumnHash(x)))
+                        .DistinctBy(x => x.TextValue)
+                        .Select(x => new WrappedString(
+                            new DoubleQuoteString(),
+                            new TrimmedHash(x)
+                        ))
+                ),
+                new RightRoundBracketString()
+            ),
+            new String("VALUES"),
+            new ConcatenatedString(
+                new JoinedString(
+                    new ConcatenatedString(new CommaString(), new WhitespaceString()),
+                    _rows.Select(x => new WrappedString(
                         new LeftRoundBracketString(),
                         new JoinedString(
                             new ConcatenatedString(
                                 new CommaString(),
                                 new WhitespaceString()
                             ),
-                            _rows
-                                .SelectMany(x => x.Cells.Keys)
-                                .Select(x => new HexString(new ColumnHash(x)))
-                                .DistinctBy(x => x.TextValue)
-                                .Select(x => new WrappedString(
-                                    new DoubleQuoteString(),
-                                    new TrimmedHash(x)
+                            x.Cells.Values.Select(c => c.Value)
+                                .Select(c => new WrappedString(
+                                    new SingleQuoteString(),
+                                    c
                                 ))
                         ),
                         new RightRoundBracketString()
-                    ),
-                    new String("VALUES"),
-                    new ConcatenatedString(
-                        new JoinedString(
-                            new ConcatenatedString(
-                                new CommaString(),
-                                new WhitespaceString()
-                            ),
-                            _rows.Select(x => new WrappedString(
-                                new LeftRoundBracketString(),
-                                new JoinedString(
-                                    new ConcatenatedString(
-                                        new CommaString(),
-                                        new WhitespaceString()
-                                    ),
-                                    x.Cells.Values.Select(c => c.Value)
-                                        .Select(c => new WrappedString(
-                                            new SingleQuoteString(),
-                                            c
-                                        ))
-                                ),
-                                new RightRoundBracketString()
-                            ))
-                        ),
-                        new SemicolonString()
-                    )
-                )
-        .TextValue;
+                    ))
+                ),
+                new SemicolonString()
+            )
+        ).TextValue;
 
     public IEnumerator<IChar> GetEnumerator()
     {

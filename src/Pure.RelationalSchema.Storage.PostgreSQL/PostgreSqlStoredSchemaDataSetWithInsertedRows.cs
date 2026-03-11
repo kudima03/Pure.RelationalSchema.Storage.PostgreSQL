@@ -26,15 +26,19 @@ public sealed record PostgreSqlStoredSchemaDataSetWithInsertedRows
                 ITable,
                 IStoredTableDataSet
             >(
-                [.. rows.Select(group => new KeyValuePair<ITable, IStoredTableDataSet>(
-                    group.Key,
-                    new PostgreSqlStoredTableDataSetWithInsertedRows(
-                        dataset[group.Key],
-                        dataset.Connection,
-                        new TrimmedHash(new HexString(new SchemaHash(dataset.Schema))),
-                        group
-                    )
-                ))],
+                [
+                    .. rows.Select(group => new KeyValuePair<ITable, IStoredTableDataSet>(
+                        group.Key,
+                        new PostgreSqlStoredTableDataSetWithInsertedRows(
+                            dataset[group.Key],
+                            dataset.Connection,
+                            new TrimmedHash(
+                                new HexString(new SchemaHash(dataset.Schema))
+                            ),
+                            group
+                        )
+                    )),
+                ],
                 pair => pair.Key,
                 pair => pair.Value,
                 table => new TableHash(table)

@@ -28,47 +28,40 @@ internal sealed record IndexCreationStatement : IString
     }
 
     public string TextValue =>
-
-
-                new WhitespaceJoinedString(
-                    new String("CREATE"),
-                    new StringChoice(
-                        _index.IsUnique,
-                        new String("UNIQUE"),
-                        new EmptyString()
-                    ),
-                    new String("INDEX IF NOT EXISTS"),
+        new WhitespaceJoinedString(
+            new String("CREATE"),
+            new StringChoice(_index.IsUnique, new String("UNIQUE"), new EmptyString()),
+            new String("INDEX IF NOT EXISTS"),
+            new WrappedString(
+                new DoubleQuoteString(),
+                new TrimmedHash(new HexString(new IndexHash(_index)))
+            ),
+            new String("ON"),
+            new JoinedString(
+                new DotString(),
+                [
+                    new WrappedString(new DoubleQuoteString(), _schemaName),
                     new WrappedString(
                         new DoubleQuoteString(),
-                        new TrimmedHash(new HexString(new IndexHash(_index)))
+                        new TrimmedHash(new HexString(new TableHash(_table)))
                     ),
-                    new String("ON"),
-                    new JoinedString(
-                        new DotString(),
-                        [
-                            new WrappedString(new DoubleQuoteString(), _schemaName),
-                            new WrappedString(
-                                new DoubleQuoteString(),
-                                new TrimmedHash(new HexString(new TableHash(_table)))
-                            ),
-                        ]
-                    ),
-                    new ConcatenatedString(
-                        new LeftRoundBracketString(),
-                        new JoinedString(
-                            new CommaString(),
-                            _index.Columns.Select(x => new WrappedString(
-                                new DoubleQuoteString(),
-                                new TrimmedHash(new HexString(new ColumnHash(x)))
-                            ))
-                        ),
-                        new ConcatenatedString(
-                            new RightRoundBracketString(),
-                            new SemicolonString()
-                        )
-                    )
+                ]
+            ),
+            new ConcatenatedString(
+                new LeftRoundBracketString(),
+                new JoinedString(
+                    new CommaString(),
+                    _index.Columns.Select(x => new WrappedString(
+                        new DoubleQuoteString(),
+                        new TrimmedHash(new HexString(new ColumnHash(x)))
+                    ))
+                ),
+                new ConcatenatedString(
+                    new RightRoundBracketString(),
+                    new SemicolonString()
                 )
-        .TextValue;
+            )
+        ).TextValue;
 
     public IEnumerator<IChar> GetEnumerator()
     {

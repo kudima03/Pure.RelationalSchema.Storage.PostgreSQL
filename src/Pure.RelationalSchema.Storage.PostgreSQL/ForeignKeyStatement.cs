@@ -23,60 +23,47 @@ internal sealed record ForeignKeyStatement : IString
     }
 
     public string TextValue =>
-
-
-                new WhitespaceJoinedString(
-                    new String("FOREIGN KEY"),
+        new WhitespaceJoinedString(
+            new String("FOREIGN KEY"),
+            new WrappedString(
+                new LeftRoundBracketString(),
+                new JoinedString(
+                    new ConcatenatedString(new CommaString(), new WhitespaceString()),
+                    _foreignKey.ReferencingColumns.Select(x => new WrappedString(
+                        new DoubleQuoteString(),
+                        new TrimmedHash(new HexString(new ColumnHash(x)))
+                    ))
+                ),
+                new RightRoundBracketString()
+            ),
+            new String("REFERENCES"),
+            new JoinedString(
+                new DotString(),
+                [
+                    new WrappedString(new DoubleQuoteString(), _schemaName),
                     new WrappedString(
-                        new LeftRoundBracketString(),
-                        new JoinedString(
-                            new ConcatenatedString(
-                                new CommaString(),
-                                new WhitespaceString()
-                            ),
-                            _foreignKey.ReferencingColumns.Select(x => new WrappedString(
-                                new DoubleQuoteString(),
-                                new TrimmedHash(new HexString(new ColumnHash(x)))
-                            ))
-                        ),
-                        new RightRoundBracketString()
+                        new DoubleQuoteString(),
+                        new TrimmedHash(
+                            new HexString(new TableHash(_foreignKey.ReferencedTable))
+                        )
                     ),
-                    new String("REFERENCES"),
+                ]
+            ),
+            new ConcatenatedString(
+                new WrappedString(
+                    new LeftRoundBracketString(),
                     new JoinedString(
-                        new DotString(),
-                        [
-                            new WrappedString(new DoubleQuoteString(), _schemaName),
-                            new WrappedString(
-                                new DoubleQuoteString(),
-                                new TrimmedHash(
-                                    new HexString(
-                                        new TableHash(_foreignKey.ReferencedTable)
-                                    )
-                                )
-                            ),
-                        ]
+                        new ConcatenatedString(new CommaString(), new WhitespaceString()),
+                        _foreignKey.ReferencedColumns.Select(x => new WrappedString(
+                            new DoubleQuoteString(),
+                            new TrimmedHash(new HexString(new ColumnHash(x)))
+                        ))
                     ),
-                    new ConcatenatedString(
-                        new WrappedString(
-                            new LeftRoundBracketString(),
-                            new JoinedString(
-                                new ConcatenatedString(
-                                    new CommaString(),
-                                    new WhitespaceString()
-                                ),
-                                _foreignKey.ReferencedColumns.Select(
-                                    x => new WrappedString(
-                                        new DoubleQuoteString(),
-                                        new TrimmedHash(new HexString(new ColumnHash(x)))
-                                    )
-                                )
-                            ),
-                            new RightRoundBracketString()
-                        ),
-                        new SemicolonString()
-                    )
-                )
-        .TextValue;
+                    new RightRoundBracketString()
+                ),
+                new SemicolonString()
+            )
+        ).TextValue;
 
     public IEnumerator<IChar> GetEnumerator()
     {

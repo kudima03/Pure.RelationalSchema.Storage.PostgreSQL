@@ -22,30 +22,23 @@ internal sealed record TableCreationStatement : IString
     }
 
     public string TextValue =>
-
-
-                new NewLineJoinedString(
-                    new TableCreationHeaderStatement(
-                        _schemaName,
-                        new TrimmedHash(new HexString(new TableHash(_table)))
-                    ),
-                    new WrappedString(
-                        new LeftRoundBracketString(),
-                        new JoinedString(
-                            new ConcatenatedString(
-                                new CommaString(),
-                                new NewLineString()
-                            ),
-                            _table
-                                .Columns.Select(x => new ColumnCreationStatement(x))
-                        ),
-                        new ConcatenatedString(
-                            new RightRoundBracketString(),
-                            new SemicolonString()
-                        )
-                    )
+        new NewLineJoinedString(
+            new TableCreationHeaderStatement(
+                _schemaName,
+                new TrimmedHash(new HexString(new TableHash(_table)))
+            ),
+            new WrappedString(
+                new LeftRoundBracketString(),
+                new JoinedString(
+                    new ConcatenatedString(new CommaString(), new NewLineString()),
+                    _table.Columns.Select(x => new ColumnCreationStatement(x))
+                ),
+                new ConcatenatedString(
+                    new RightRoundBracketString(),
+                    new SemicolonString()
                 )
-        .TextValue;
+            )
+        ).TextValue;
 
     public IEnumerator<IChar> GetEnumerator()
     {
