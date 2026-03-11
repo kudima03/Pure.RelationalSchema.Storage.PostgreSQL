@@ -38,8 +38,6 @@ internal sealed record TableCreationStatement : IString
                             ),
                             _table
                                 .Columns.Select(x => new ColumnCreationStatement(x))
-                                .Cast<IString>()
-                                .Prepend(new PrimaryColumnCreationStatement())
                         ),
                         new ConcatenatedString(
                             new RightRoundBracketString(),
