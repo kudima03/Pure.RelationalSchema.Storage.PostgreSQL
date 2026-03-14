@@ -2,6 +2,7 @@ using System.Collections;
 using Pure.Primitives.Abstractions.Char;
 using Pure.Primitives.Abstractions.String;
 using Pure.Primitives.Choices.String;
+using Pure.Primitives.Number;
 using Pure.Primitives.String;
 using Pure.Primitives.String.Operations;
 using Pure.RelationalSchema.Abstractions.Index;
@@ -34,7 +35,21 @@ internal sealed record IndexCreationStatement : IString
             new String("INDEX IF NOT EXISTS"),
             new WrappedString(
                 new DoubleQuoteString(),
-                new TrimmedHash(new HexString(new IndexHash(_index)))
+                new JoinedString(
+                    new DotString(),
+                    [
+                        new Substring(
+                            new HexString(new TableHash(_table)),
+                            new Zero<ushort>(),
+                            new UShort(31)
+                        ),
+                        new Substring(
+                            new HexString(new IndexHash(_index)),
+                            new Zero<ushort>(),
+                            new UShort(31)
+                        ),
+                    ]
+                )
             ),
             new String("ON"),
             new JoinedString(
