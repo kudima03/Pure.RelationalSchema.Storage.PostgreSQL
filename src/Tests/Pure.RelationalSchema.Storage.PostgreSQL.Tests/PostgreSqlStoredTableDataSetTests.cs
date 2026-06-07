@@ -59,14 +59,15 @@ public sealed record PostgreSqlStoredTableDataSetTests : IClassFixture<DatabaseF
     [Fact]
     public void TableSchemaInitializeCorrectly()
     {
-        Assert.Equal(
-            new TableHash(_fixture.Schema.Tables.First()),
-            new TableHash(
-                new PostgreSqlStoredTableDataSet(
-                    _fixture.Schema.Tables.First(),
-                    _fixture.Schema,
-                    _fixture.Connection
-                ).TableSchema
+        Assert.True(
+            new TableHash(_fixture.Schema.Tables.First()).SequenceEqual(
+                new TableHash(
+                    new PostgreSqlStoredTableDataSet(
+                        _fixture.Schema.Tables.First(),
+                        _fixture.Schema,
+                        _fixture.Connection
+                    ).TableSchema
+                )
             )
         );
     }
