@@ -15,6 +15,8 @@ dotnet test --no-build --verbosity normal     # run integration tests (requires 
 dotnet pack --configuration Release -p:Version=<version> --output .
 ```
 
+CI additionally passes `-p:AssemblyVersion` (pinned to the major) and `-p:FileVersion`; see `.github/workflows/publish-nuget.yml`.
+
 ## Architecture
 
 This is a **PostgreSQL storage implementation** for the Pure relational schema ecosystem. It has no public abstractions of its own — it provides concrete types that implement interfaces from `Pure.RelationalSchema.Storage`.
