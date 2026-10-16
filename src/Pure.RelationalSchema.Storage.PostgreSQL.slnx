@@ -1,9 +1,18 @@
 <Solution>
-  <Folder Name="/Solution Items/">
-    <File Path=".editorconfig" />
-  </Folder>
-  <Folder Name="/Tests/">
-    <Project Path="Tests/Pure.RelationalSchema.Storage.PostgreSQL.Tests/Pure.RelationalSchema.Storage.PostgreSQL.Tests.csproj" />
-  </Folder>
   <Project Path="Pure.RelationalSchema.Storage.PostgreSQL/Pure.RelationalSchema.Storage.PostgreSQL.csproj" />
+  <Folder Name="/Abstractions/">
+    <Project Path="../modules/Abstractions/src/Pure.RelationalSchema.Storage.PostgreSQL.Abstractions/Pure.RelationalSchema.Storage.PostgreSQL.Abstractions.csproj" />
+  </Folder>
+  <Folder Name="/Creation/">
+    <Project Path="../modules/Creation/src/Pure.RelationalSchema.Storage.PostgreSQL.Creation/Pure.RelationalSchema.Storage.PostgreSQL.Creation.csproj" />
+    <Project Path="../modules/Creation/src/Tests/Pure.RelationalSchema.Storage.PostgreSQL.Creation.Tests/Pure.RelationalSchema.Storage.PostgreSQL.Creation.Tests.csproj" />
+  </Folder>
+  <Folder Name="/Querying/">
+    <Project Path="../modules/Querying/src/Pure.RelationalSchema.Storage.PostgreSQL.Querying/Pure.RelationalSchema.Storage.PostgreSQL.Querying.csproj" />
+    <Project Path="../modules/Querying/src/Tests/Pure.RelationalSchema.Storage.PostgreSQL.Querying.Tests/Pure.RelationalSchema.Storage.PostgreSQL.Querying.Tests.csproj" />
+  </Folder>
+  <Folder Name="/Insertion/">
+    <Project Path="../modules/Insertion/src/Pure.RelationalSchema.Storage.PostgreSQL.Insertion/Pure.RelationalSchema.Storage.PostgreSQL.Insertion.csproj" />
+    <Project Path="../modules/Insertion/src/Tests/Pure.RelationalSchema.Storage.PostgreSQL.Insertion.Tests/Pure.RelationalSchema.Storage.PostgreSQL.Insertion.Tests.csproj" />
+  </Folder>
 </Solution>

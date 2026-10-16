@@ -1,0 +1,28 @@
+name: .NET build
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./src
+    steps:
+    - uses: actions/checkout@v7
+      with:
+        submodules: recursive
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v6
+      with:
+        dotnet-version: 10.x.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore -warnaserror
+    - name: Pack meta-package
+      run: |
+        dotnet pack Pure.RelationalSchema.Storage.PostgreSQL/Pure.RelationalSchema.Storage.PostgreSQL.csproj \
+          --no-restore --configuration Release -p:Version=0.0.0-ci --output ./pack

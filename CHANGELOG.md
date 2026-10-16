@@ -6,6 +6,25 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [Unreleased]
+
+### Changed
+
+- **Breaking:** the package no longer contains code. It is now a meta-package that references the four packages the code was split into, and this repository aggregates their sources as submodules. Every public type moved to a new namespace; update your `using` directives (see the README).
+
+  | Package | First version |
+  |---------|---------------|
+  | `Pure.RelationalSchema.Storage.PostgreSQL.Abstractions` | `0.1.0-preview.0.1.0` |
+  | `Pure.RelationalSchema.Storage.PostgreSQL.Creation` | `0.1.0-preview.0.1.0` |
+  | `Pure.RelationalSchema.Storage.PostgreSQL.Querying` | `0.1.0-preview.0.1.0` |
+  | `Pure.RelationalSchema.Storage.PostgreSQL.Insertion` | `0.1.0-preview.0.1.0` |
+
+- Asynchronous enumeration in Querying no longer disposes the caller's connection.
+
+### Removed
+
+- Package validation against `0.1.0-preview.8.1.2`, the test project, the tool manifest and the devcontainer.
+
 ## [0.1.0-preview.8.1.2] — 2026-08-04
 
 - Maintenance release: dependency and build updates.

@@ -1,0 +1,16 @@
+[submodule "modules/Abstractions"]
+	path = modules/Abstractions
+	url = git@github.com:kudima03/Pure.RelationalSchema.Storage.PostgreSQL.Abstractions.git
+	branch = main
+[submodule "modules/Creation"]
+	path = modules/Creation
+	url = git@github.com:kudima03/Pure.RelationalSchema.Storage.PostgreSQL.Creation.git
+	branch = main
+[submodule "modules/Querying"]
+	path = modules/Querying
+	url = git@github.com:kudima03/Pure.RelationalSchema.Storage.PostgreSQL.Querying.git
+	branch = main
+[submodule "modules/Insertion"]
+	path = modules/Insertion
+	url = git@github.com:kudima03/Pure.RelationalSchema.Storage.PostgreSQL.Insertion.git
+	branch = main

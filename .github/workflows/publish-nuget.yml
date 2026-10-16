@@ -25,7 +25,8 @@ jobs:
       env:
         TAG: ${{ github.ref_name }}
       run: |
-        dotnet pack --configuration Release \
+        dotnet pack Pure.RelationalSchema.Storage.PostgreSQL/Pure.RelationalSchema.Storage.PostgreSQL.csproj \
+          --configuration Release \
           -p:Version="$TAG" \
           -p:AssemblyVersion="${TAG%%.*}.0.0.0" \
           -p:FileVersion="${TAG%%-*}" \
