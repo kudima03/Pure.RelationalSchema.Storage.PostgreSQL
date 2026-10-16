@@ -1,16 +1,14 @@
 version: 2
 updates:
 - package-ecosystem: nuget
-  directories:
-    - "src/Pure.RelationalSchema.Storage.PostgreSQL"
-    - "src/Tests/Pure.RelationalSchema.Storage.PostgreSQL.Tests"
+  directory: "src/Pure.RelationalSchema.Storage.PostgreSQL"
   schedule:
     interval: daily
-- package-ecosystem: "github-actions"
+- package-ecosystem: gitsubmodule
   directory: "/"
   schedule:
     interval: weekly
-- package-ecosystem: "devcontainers"
+- package-ecosystem: "github-actions"
   directory: "/"
   schedule:
     interval: weekly

@@ -4,32 +4,33 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
-    <EnablePackageValidation>true</EnablePackageValidation>
-    <PackageValidationBaselineVersion>0.1.0-preview.8.1.2</PackageValidationBaselineVersion>
-    <IsAotCompatible>false</IsAotCompatible>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <NoWarn>$(NoWarn);NU5128</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
     <PackageId>Pure.RelationalSchema.Storage.PostgreSQL</PackageId>
-    <RootNamespace>Pure.RelationalSchema.Storage.PostgreSQL</RootNamespace>
-    <AssemblyName>Pure.RelationalSchema.Storage.PostgreSQL</AssemblyName>
+    <Description>Meta-package that references the Abstractions, Creation, Querying and Insertion packages of the Pure relational schema PostgreSQL storage. It contains no code.</Description>
     <Authors>Dmitry Kurochkin</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageProjectUrl>https://github.com/kudima03/Pure.RelationalSchema.Storage.PostgreSQL</PackageProjectUrl>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Pure.Collections.Generic" Version="0.1.0-preview.3.0.0" />
-    <PackageReference Include="Pure.Primitives" Version="3.6.5" />
-    <PackageReference Include="Pure.Primitives.Abstractions" Version="4.3.0" />
-    <PackageReference Include="Pure.Primitives.Choices" Version="1.2.2" />
-    <PackageReference Include="Pure.Primitives.String.Operations" Version="1.5.1" />
-    <PackageReference Include="Pure.Primitives.Switches" Version="1.1.3" />
-    <PackageReference Include="Pure.RelationalSchema" Version="2.0.3" />
-    <PackageReference Include="Pure.RelationalSchema.HashCodes" Version="3.3.0" />
-    <PackageReference Include="Pure.RelationalSchema.Storage" Version="0.1.0-preview.8.0.0" />
     <PackageReference
-      Include="Pure.RelationalSchema.Storage.HashCodes"
-      Version="0.1.0-preview.2.2.0"
+      Include="Pure.RelationalSchema.Storage.PostgreSQL.Abstractions"
+      Version="0.1.0-preview.0.1.0"
+    />
+    <PackageReference
+      Include="Pure.RelationalSchema.Storage.PostgreSQL.Creation"
+      Version="0.1.0-preview.0.1.0"
+    />
+    <PackageReference
+      Include="Pure.RelationalSchema.Storage.PostgreSQL.Insertion"
+      Version="0.1.0-preview.0.1.0"
+    />
+    <PackageReference
+      Include="Pure.RelationalSchema.Storage.PostgreSQL.Querying"
+      Version="0.1.0-preview.0.2.0"
     />
   </ItemGroup>
   <ItemGroup>
