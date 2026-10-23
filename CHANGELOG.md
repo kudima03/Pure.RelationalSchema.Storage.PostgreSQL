@@ -6,7 +6,20 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
-## [Unreleased]
+## [0.1.0-preview.9.1.0] — 2026-10-23
+
+### Changed
+
+- Updated the referenced packages:
+
+  | Package | Version |
+  |---------|---------|
+  | `Pure.RelationalSchema.Storage.PostgreSQL.Abstractions` | `0.1.0-preview.0.1.0` (unchanged) |
+  | `Pure.RelationalSchema.Storage.PostgreSQL.Creation` | `0.1.0-preview.0.1.0` → `0.1.0-preview.0.3.1` |
+  | `Pure.RelationalSchema.Storage.PostgreSQL.Querying` | `0.1.0-preview.0.2.0` → `0.1.0-preview.0.4.0` |
+  | `Pure.RelationalSchema.Storage.PostgreSQL.Insertion` | `0.1.0-preview.0.1.1` → `0.1.0-preview.0.3.0` |
+
+## [0.1.0-preview.9.0.0] — 2026-10-16
 
 ### Changed
 
