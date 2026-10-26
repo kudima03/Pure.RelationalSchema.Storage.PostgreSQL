@@ -6,7 +6,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
-## [Unreleased]
+## [0.1.0-preview.9.2.0] — 2026-10-26
 
 ### Added
 
@@ -16,6 +16,17 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   |---------|---------|----------|
   | `Pure.RelationalSchema.Storage.PostgreSQL.Migration` | `0.1.0-preview.0.1.0` | `PostgreSqlMigratedSchema`: migrates the stored data of a schema to a changed version of it |
   | `Pure.RelationalSchema.Storage.PostgreSQL.Destruction` | `0.1.0-preview.0.1.0` | `PostgreSqlDroppedSchema`: drops a schema's storage with all its tables and data |
+
+### Changed
+
+- Updated the referenced packages:
+
+  | Package | Version |
+  |---------|---------|
+  | `Pure.RelationalSchema.Storage.PostgreSQL.Abstractions` | `0.1.0-preview.0.1.0` (unchanged) |
+  | `Pure.RelationalSchema.Storage.PostgreSQL.Creation` | `0.1.0-preview.0.3.1` → `0.1.0-preview.0.4.0` |
+  | `Pure.RelationalSchema.Storage.PostgreSQL.Querying` | `0.1.0-preview.0.4.0` → `0.1.0-preview.0.6.0` |
+  | `Pure.RelationalSchema.Storage.PostgreSQL.Insertion` | `0.1.0-preview.0.3.0` → `0.1.0-preview.0.4.0` |
 
 ## [0.1.0-preview.9.1.0] — 2026-10-23
 
