@@ -6,6 +6,17 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [Unreleased]
+
+### Added
+
+- The meta-package now also references the Migration and Destruction packages, and their sources are aggregated as submodules:
+
+  | Package | Version | Contents |
+  |---------|---------|----------|
+  | `Pure.RelationalSchema.Storage.PostgreSQL.Migration` | `0.1.0-preview.0.1.0` | `PostgreSqlMigratedSchema`: migrates the stored data of a schema to a changed version of it |
+  | `Pure.RelationalSchema.Storage.PostgreSQL.Destruction` | `0.1.0-preview.0.1.0` | `PostgreSqlDroppedSchema`: drops a schema's storage with all its tables and data |
+
 ## [0.1.0-preview.9.1.0] — 2026-10-23
 
 ### Changed

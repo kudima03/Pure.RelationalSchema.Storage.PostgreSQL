@@ -1,6 +1,6 @@
 # Pure.RelationalSchema.Storage.PostgreSQL
 
-PostgreSQL storage for the **Pure** relational schema ecosystem. This package has been **split into four packages**; `Pure.RelationalSchema.Storage.PostgreSQL` is now a meta-package that contains no code and references all of them, and this repository aggregates their sources as submodules.
+PostgreSQL storage for the **Pure** relational schema ecosystem. This package has been **split into separate packages**; `Pure.RelationalSchema.Storage.PostgreSQL` is now a meta-package that contains no code and references all of them, and this repository aggregates their sources as submodules.
 
 [![.NET build](https://github.com/kudima03/Pure.RelationalSchema.Storage.PostgreSQL/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/kudima03/Pure.RelationalSchema.Storage.PostgreSQL/actions/workflows/build.yml)
 [![NuGet](https://img.shields.io/nuget/v/Pure.RelationalSchema.Storage.PostgreSQL)](https://www.nuget.org/packages/Pure.RelationalSchema.Storage.PostgreSQL)
@@ -14,8 +14,14 @@ PostgreSQL storage for the **Pure** relational schema ecosystem. This package ha
 | [`Pure.RelationalSchema.Storage.PostgreSQL.Creation`](https://www.nuget.org/packages/Pure.RelationalSchema.Storage.PostgreSQL.Creation) | [source](https://github.com/kudima03/Pure.RelationalSchema.Storage.PostgreSQL.Creation) | `PostgreSqlCreatedSchema` (DDL) |
 | [`Pure.RelationalSchema.Storage.PostgreSQL.Querying`](https://www.nuget.org/packages/Pure.RelationalSchema.Storage.PostgreSQL.Querying) | [source](https://github.com/kudima03/Pure.RelationalSchema.Storage.PostgreSQL.Querying) | `PostgreSqlStoredSchemaDataSet`, `PostgreSqlStoredTableDataSet` |
 | [`Pure.RelationalSchema.Storage.PostgreSQL.Insertion`](https://www.nuget.org/packages/Pure.RelationalSchema.Storage.PostgreSQL.Insertion) | [source](https://github.com/kudima03/Pure.RelationalSchema.Storage.PostgreSQL.Insertion) | `PostgreSqlStoredSchemaDataSetWithInsertedRows` |
+| [`Pure.RelationalSchema.Storage.PostgreSQL.Migration`](https://www.nuget.org/packages/Pure.RelationalSchema.Storage.PostgreSQL.Migration) | [source](https://github.com/kudima03/Pure.RelationalSchema.Storage.PostgreSQL.Migration) | `PostgreSqlMigratedSchema`, `SchemaMigration`, `TableMapping`, `ColumnMapping` |
+| [`Pure.RelationalSchema.Storage.PostgreSQL.Destruction`](https://www.nuget.org/packages/Pure.RelationalSchema.Storage.PostgreSQL.Destruction) | [source](https://github.com/kudima03/Pure.RelationalSchema.Storage.PostgreSQL.Destruction) | `PostgreSqlDroppedSchema` |
 
-Installing `Pure.RelationalSchema.Storage.PostgreSQL` pulls in all four. To take only what you need, reference the individual packages instead. Insertion and Querying depend on Abstractions; they do not depend on each other or on Creation.
+Installing `Pure.RelationalSchema.Storage.PostgreSQL` pulls in all six. To take only what you need, reference the individual packages instead.
+
+- Insertion and Querying depend on Abstractions; they do not depend on each other or on Creation.
+- Migration depends on Creation (`0.1.0-preview.0.4.0` or later), which creates what is new in the target schema, and on [`Pure.RelationalSchema.Migration.Abstractions`](https://github.com/kudima03/Pure.RelationalSchema.Migration.Abstractions) (`ISchemaMigration`, `ITableMapping`, `IColumnMapping`).
+- Destruction depends on none of the other packages. It finds the storage by the same schema hash that Creation uses.
 
 ## Migrating from 0.1.0-preview.8.x
 
@@ -60,6 +66,28 @@ await foreach (IRow row in tableDataset)
 IPostgreSqlStoredSchemaDataSet withInserted =
     new PostgreSqlStoredSchemaDataSetWithInsertedRows(dataset, rowGroups);
 ```
+
+Migrating stored data to a changed schema, and dropping a schema's storage:
+
+```csharp
+using Pure.RelationalSchema.Abstractions.Schema;
+using Pure.RelationalSchema.Migration.Abstractions.TableMapping;
+using Pure.RelationalSchema.Storage.PostgreSQL.Destruction;
+using Pure.RelationalSchema.Storage.PostgreSQL.Migration;
+using IDbConnection = System.Data.IDbConnection;
+
+// source is the stored ISchema, target its changed version.
+// tableMappings: IEnumerable<ITableMapping>, needed only for changed tables and columns.
+// Reading a member drops, renames, retypes and adds what changed, then creates what is new.
+ISchema migratedSchema =
+    new PostgreSqlMigratedSchema(source, target, tableMappings, connection);
+_ = migratedSchema.Name;
+
+// Drops the schema's storage with all its tables and data, on first member access.
+_ = new PostgreSqlDroppedSchema(migratedSchema, connection).Name;
+```
+
+`System.Data` also declares `ITableMapping` and `IColumnMapping`, so alias what you need from it instead of importing the whole namespace in files that use the migration types.
 
 ## Working on the packages together
 

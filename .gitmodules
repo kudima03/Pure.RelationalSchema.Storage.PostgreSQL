@@ -14,3 +14,11 @@
 	path = modules/Insertion
 	url = git@github.com:kudima03/Pure.RelationalSchema.Storage.PostgreSQL.Insertion.git
 	branch = main
+[submodule "modules/Migration"]
+	path = modules/Migration
+	url = git@github.com:kudima03/Pure.RelationalSchema.Storage.PostgreSQL.Migration.git
+	branch = main
+[submodule "modules/Destruction"]
+	path = modules/Destruction
+	url = git@github.com:kudima03/Pure.RelationalSchema.Storage.PostgreSQL.Destruction.git
+	branch = main
