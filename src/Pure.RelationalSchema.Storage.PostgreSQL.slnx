@@ -23,4 +23,8 @@
     <Project Path="../modules/Destruction/src/Pure.RelationalSchema.Storage.PostgreSQL.Destruction/Pure.RelationalSchema.Storage.PostgreSQL.Destruction.csproj" />
     <Project Path="../modules/Destruction/src/Tests/Pure.RelationalSchema.Storage.PostgreSQL.Destruction.Tests/Pure.RelationalSchema.Storage.PostgreSQL.Destruction.Tests.csproj" />
   </Folder>
+  <Folder Name="/Existence/">
+    <Project Path="../modules/Existence/src/Pure.RelationalSchema.Storage.PostgreSQL.Existence/Pure.RelationalSchema.Storage.PostgreSQL.Existence.csproj" />
+    <Project Path="../modules/Existence/src/Tests/Pure.RelationalSchema.Storage.PostgreSQL.Existence.Tests/Pure.RelationalSchema.Storage.PostgreSQL.Existence.Tests.csproj" />
+  </Folder>
 </Solution>
