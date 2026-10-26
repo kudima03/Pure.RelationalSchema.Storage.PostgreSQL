@@ -9,7 +9,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <PackageId>Pure.RelationalSchema.Storage.PostgreSQL</PackageId>
-    <Description>Meta-package that references the Abstractions, Creation, Querying, Insertion, Migration and Destruction packages of the Pure relational schema PostgreSQL storage. It contains no code.</Description>
+    <Description>Meta-package that references the Abstractions, Creation, Querying, Insertion, Migration, Destruction and Existence packages of the Pure relational schema PostgreSQL storage. It contains no code.</Description>
     <Authors>Dmitry Kurochkin</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -26,6 +26,10 @@
     />
     <PackageReference
       Include="Pure.RelationalSchema.Storage.PostgreSQL.Destruction"
+      Version="0.1.0-preview.0.1.0"
+    />
+    <PackageReference
+      Include="Pure.RelationalSchema.Storage.PostgreSQL.Existence"
       Version="0.1.0-preview.0.1.0"
     />
     <PackageReference

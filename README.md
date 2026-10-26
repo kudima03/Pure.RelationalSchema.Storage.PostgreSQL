@@ -16,12 +16,14 @@ PostgreSQL storage for the **Pure** relational schema ecosystem. This package ha
 | [`Pure.RelationalSchema.Storage.PostgreSQL.Insertion`](https://www.nuget.org/packages/Pure.RelationalSchema.Storage.PostgreSQL.Insertion) | [source](https://github.com/kudima03/Pure.RelationalSchema.Storage.PostgreSQL.Insertion) | `PostgreSqlStoredSchemaDataSetWithInsertedRows` |
 | [`Pure.RelationalSchema.Storage.PostgreSQL.Migration`](https://www.nuget.org/packages/Pure.RelationalSchema.Storage.PostgreSQL.Migration) | [source](https://github.com/kudima03/Pure.RelationalSchema.Storage.PostgreSQL.Migration) | `PostgreSqlMigratedSchema`, `SchemaMigration`, `TableMapping`, `ColumnMapping` |
 | [`Pure.RelationalSchema.Storage.PostgreSQL.Destruction`](https://www.nuget.org/packages/Pure.RelationalSchema.Storage.PostgreSQL.Destruction) | [source](https://github.com/kudima03/Pure.RelationalSchema.Storage.PostgreSQL.Destruction) | `PostgreSqlDroppedSchema` |
+| [`Pure.RelationalSchema.Storage.PostgreSQL.Existence`](https://www.nuget.org/packages/Pure.RelationalSchema.Storage.PostgreSQL.Existence) | [source](https://github.com/kudima03/Pure.RelationalSchema.Storage.PostgreSQL.Existence) | `PostgreSqlStoredSchemaExistence` |
 
-Installing `Pure.RelationalSchema.Storage.PostgreSQL` pulls in all six. To take only what you need, reference the individual packages instead.
+Installing `Pure.RelationalSchema.Storage.PostgreSQL` pulls in all seven. To take only what you need, reference the individual packages instead.
 
 - Insertion and Querying depend on Abstractions; they do not depend on each other or on Creation.
 - Migration depends on Creation (`0.1.0-preview.0.4.0` or later), which creates what is new in the target schema, and on [`Pure.RelationalSchema.Migration.Abstractions`](https://github.com/kudima03/Pure.RelationalSchema.Migration.Abstractions) (`ISchemaMigration`, `ITableMapping`, `IColumnMapping`).
 - Destruction depends on none of the other packages. It finds the storage by the same schema hash that Creation uses.
+- Existence depends on none of the other packages either. It looks up the storage by the same schema hash.
 
 ## Migrating from 0.1.0-preview.8.x
 
@@ -88,6 +90,22 @@ _ = new PostgreSqlDroppedSchema(migratedSchema, connection).Name;
 ```
 
 `System.Data` also declares `ITableMapping` and `IColumnMapping`, so alias what you need from it instead of importing the whole namespace in files that use the migration types.
+
+Checking whether a schema's storage exists, for example to migrate only stored data:
+
+```csharp
+using Pure.Primitives.Abstractions.Bool;
+using Pure.RelationalSchema.Storage.PostgreSQL.Existence;
+using Pure.RelationalSchema.Storage.PostgreSQL.Migration;
+
+// source, target, tableMappings and connection as above.
+// Queries the PostgreSQL catalog again on every read of BoolValue.
+IBool stored = new PostgreSqlStoredSchemaExistence(source, connection);
+if (stored.BoolValue)
+{
+    _ = new PostgreSqlMigratedSchema(source, target, tableMappings, connection).Name;
+}
+```
 
 ## Working on the packages together
 

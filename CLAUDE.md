@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 An aggregation of the PostgreSQL storage packages for the Pure relational schema ecosystem. It holds **no code of its own**:
 
-- `src/Pure.RelationalSchema.Storage.PostgreSQL/` is a meta-package project (`IncludeBuildOutput=false`) that only references the six packages below. Do not add source files to it.
+- `src/Pure.RelationalSchema.Storage.PostgreSQL/` is a meta-package project (`IncludeBuildOutput=false`) that only references the seven packages below. Do not add source files to it.
 - `modules/` contains the package repositories as git submodules, pinned to released tags:
   - [Abstractions](https://github.com/kudima03/Pure.RelationalSchema.Storage.PostgreSQL.Abstractions)
   - [Creation](https://github.com/kudima03/Pure.RelationalSchema.Storage.PostgreSQL.Creation)
@@ -14,6 +14,7 @@ An aggregation of the PostgreSQL storage packages for the Pure relational schema
   - [Insertion](https://github.com/kudima03/Pure.RelationalSchema.Storage.PostgreSQL.Insertion)
   - [Migration](https://github.com/kudima03/Pure.RelationalSchema.Storage.PostgreSQL.Migration)
   - [Destruction](https://github.com/kudima03/Pure.RelationalSchema.Storage.PostgreSQL.Destruction)
+  - [Existence](https://github.com/kudima03/Pure.RelationalSchema.Storage.PostgreSQL.Existence)
 - `src/Pure.RelationalSchema.Storage.PostgreSQL.slnx` is a combined solution over all of them.
 
 Code changes belong in the package repositories, not here. Do not edit files under `modules/`; bump the submodule pointer instead.
@@ -32,7 +33,7 @@ Pack the meta-package project explicitly: `dotnet pack` without a project would 
 
 ## Releasing
 
-Pushing a semver tag matching `*.*.*` triggers `.github/workflows/publish-nuget.yml`, which packs the meta-package with the tag as its version and publishes it to GitHub Packages and NuGet.org. Before tagging, make sure the `PackageReference` versions in the csproj and the submodule pointers match the releases of the six packages.
+Pushing a semver tag matching `*.*.*` triggers `.github/workflows/publish-nuget.yml`, which packs the meta-package with the tag as its version and publishes it to GitHub Packages and NuGet.org. Before tagging, make sure the `PackageReference` versions in the csproj and the submodule pointers match the releases of the seven packages.
 
 ## Commit Messages
 

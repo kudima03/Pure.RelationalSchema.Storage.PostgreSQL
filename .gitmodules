@@ -22,3 +22,7 @@
 	path = modules/Destruction
 	url = git@github.com:kudima03/Pure.RelationalSchema.Storage.PostgreSQL.Destruction.git
 	branch = main
+[submodule "modules/Existence"]
+	path = modules/Existence
+	url = git@github.com:kudima03/Pure.RelationalSchema.Storage.PostgreSQL.Existence.git
+	branch = main
