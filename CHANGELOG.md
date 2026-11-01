@@ -6,6 +6,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [Unreleased]
+
+### Added
+
+- The meta-package now also references the Existence package, and its sources are aggregated as a submodule:
+
+  | Package | Version | Contents |
+  |---------|---------|----------|
+  | `Pure.RelationalSchema.Storage.PostgreSQL.Existence` | `0.1.0-preview.0.1.0` | `PostgreSqlStoredSchemaExistence`: tells whether a schema's storage exists, checked on every read |
+
 ## [0.1.0-preview.10.0.0] — 2026-10-31
 
 ### Changed
