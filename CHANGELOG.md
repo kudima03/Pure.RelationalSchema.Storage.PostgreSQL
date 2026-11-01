@@ -16,6 +16,22 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   |---------|---------|----------|
   | `Pure.RelationalSchema.Storage.PostgreSQL.Existence` | `0.1.0-preview.0.1.0` | `PostgreSqlStoredSchemaExistence`: tells whether a schema's storage exists, checked on every read |
 
+## [0.1.0-preview.10.0.0] — 2026-10-31
+
+### Changed
+
+- **Breaking:** updated `Pure.RelationalSchema.Storage.PostgreSQL.Insertion` to `0.1.0-preview.1.0.0`. Rows are no longer de-duplicated before they are inserted, and rows that are already stored are no longer skipped, so inserting the same rows again stores them again unless a unique index rejects them. Declare a unique index (`IIndex.IsUnique`) where rows must be unique. This also fixes the `NotSupportedException` thrown when inserting into a dataset read through Querying `0.1.0-preview.0.6.0` or later.
+- Updated `Pure.RelationalSchema.Storage.PostgreSQL.Querying` to `0.1.0-preview.0.9.0`: more queries translate to a single SQL statement (`ExceptBy`, `IntersectBy`, `UnionBy`, `MinBy`, `MaxBy`, aggregates, parsed and date/time cells), and `DateTime`, `DateOnly`, `TimeOnly` and `TimeSpan` results can be read.
+
+  | Package | Version |
+  |---------|---------|
+  | `Pure.RelationalSchema.Storage.PostgreSQL.Abstractions` | `0.1.0-preview.0.1.0` (unchanged) |
+  | `Pure.RelationalSchema.Storage.PostgreSQL.Creation` | `0.1.0-preview.0.4.0` (unchanged) |
+  | `Pure.RelationalSchema.Storage.PostgreSQL.Querying` | `0.1.0-preview.0.6.0` → `0.1.0-preview.0.9.0` |
+  | `Pure.RelationalSchema.Storage.PostgreSQL.Insertion` | `0.1.0-preview.0.4.0` → `0.1.0-preview.1.0.0` |
+  | `Pure.RelationalSchema.Storage.PostgreSQL.Migration` | `0.1.0-preview.0.1.0` (unchanged) |
+  | `Pure.RelationalSchema.Storage.PostgreSQL.Destruction` | `0.1.0-preview.0.1.0` (unchanged) |
+
 ## [0.1.0-preview.9.2.0] — 2026-10-26
 
 ### Added
