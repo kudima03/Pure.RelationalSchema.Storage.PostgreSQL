@@ -6,7 +6,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
-## [Unreleased]
+## [0.1.0-preview.10.1.0] — 2026-11-05
 
 ### Added
 
@@ -15,6 +15,20 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   | Package | Version | Contents |
   |---------|---------|----------|
   | `Pure.RelationalSchema.Storage.PostgreSQL.Existence` | `0.1.0-preview.0.1.0` | `PostgreSqlStoredSchemaExistence`: tells whether a schema's storage exists, checked on every read |
+
+### Changed
+
+- Updated `Pure.RelationalSchema.Storage.PostgreSQL.Querying` to `0.1.0-preview.0.9.1`, a patch release with a dependency update.
+
+  | Package | Version |
+  |---------|---------|
+  | `Pure.RelationalSchema.Storage.PostgreSQL.Abstractions` | `0.1.0-preview.0.1.0` (unchanged) |
+  | `Pure.RelationalSchema.Storage.PostgreSQL.Creation` | `0.1.0-preview.0.4.0` (unchanged) |
+  | `Pure.RelationalSchema.Storage.PostgreSQL.Querying` | `0.1.0-preview.0.9.0` → `0.1.0-preview.0.9.1` |
+  | `Pure.RelationalSchema.Storage.PostgreSQL.Insertion` | `0.1.0-preview.1.0.0` (unchanged) |
+  | `Pure.RelationalSchema.Storage.PostgreSQL.Migration` | `0.1.0-preview.0.1.0` (unchanged) |
+  | `Pure.RelationalSchema.Storage.PostgreSQL.Destruction` | `0.1.0-preview.0.1.0` (unchanged) |
+  | `Pure.RelationalSchema.Storage.PostgreSQL.Existence` | `0.1.0-preview.0.1.0` (new) |
 
 ## [0.1.0-preview.10.0.0] — 2026-10-31
 
