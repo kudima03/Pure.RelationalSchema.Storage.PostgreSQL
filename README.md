@@ -124,3 +124,4 @@ Changes to a package are made in its own repository and released there. Dependab
 - .NET 8
 - .NET 9
 - .NET 10
+- .NET 11
