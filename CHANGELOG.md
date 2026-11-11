@@ -6,6 +6,26 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [0.1.0-preview.11.0.0] — 2026-11-11
+
+### Added
+
+- .NET 11 support: the meta-package now also targets `net11.0`, and the README lists .NET 11 among the supported target frameworks.
+
+### Changed
+
+- Updated all referenced packages to their .NET 11 releases. Creation and Migration are major (preview.1.0.0) releases, so this release is a major bump of the meta-package.
+
+  | Package | Version |
+  |---------|---------|
+  | `Pure.RelationalSchema.Storage.PostgreSQL.Abstractions` | `0.1.0-preview.0.1.0` → `0.1.0-preview.0.2.0` |
+  | `Pure.RelationalSchema.Storage.PostgreSQL.Creation` | `0.1.0-preview.0.4.0` → `0.1.0-preview.1.0.0` |
+  | `Pure.RelationalSchema.Storage.PostgreSQL.Querying` | `0.1.0-preview.0.9.1` → `0.1.0-preview.0.11.0` |
+  | `Pure.RelationalSchema.Storage.PostgreSQL.Insertion` | `0.1.0-preview.1.0.0` → `0.1.0-preview.1.1.0` |
+  | `Pure.RelationalSchema.Storage.PostgreSQL.Migration` | `0.1.0-preview.0.1.0` → `0.1.0-preview.1.0.0` |
+  | `Pure.RelationalSchema.Storage.PostgreSQL.Destruction` | `0.1.0-preview.0.1.0` → `0.1.0-preview.0.2.0` |
+  | `Pure.RelationalSchema.Storage.PostgreSQL.Existence` | `0.1.0-preview.0.1.0` → `0.1.0-preview.0.2.0` |
+
 ## [0.1.0-preview.10.1.0] — 2026-11-05
 
 ### Added
